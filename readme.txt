@@ -57,7 +57,7 @@ Absolutely not, the user deleted is only the currently logged in user, period.
 
 = What does the Shortcode display when the user is not logged in or their role is not allowed to delete themselves? =
 
-a) Nothing when using the self-closing Shortcode ( i.e. `[plugin_delete_me /]` ).
+a) Nothing when using the self-closing Shortcode tag ( i.e. `[plugin_delete_me /]` ).
 b) However, when using the opening and closing Shortcode tags ( i.e. `[plugin_delete_me]` Content `[/plugin_delete_me]` ) the content inside the tags will appear instead of the delete link.
 
 = Where is a user sent after deleting themselves? =
