@@ -16,13 +16,13 @@ on any Post or Page using the Shortcode `[plugin_delete_me /]`. Settings for thi
 
 How it works:
 
-1. A user clicks the delete link, which by default says `Delete Profile`, but can be changed.
+* A user clicks the delete link, which by default says `Delete Profile`, but can be changed.
 
-2. User is prompted to confirm they want to delete themselves ( OK | Cancel ).
+* User is prompted to confirm they want to delete themselves ( OK | Cancel ).
 
-3. If ( OK ) the user is deleted along with all their Posts and Links.
+* If ( OK ) the user is deleted along with all their Posts and Links.
 
-4. Deleted user is redirected to the landing page URL, which by default is your home page, but can be changed.
+* Deleted user is redirected to the landing page URL, which by default is your home page, but can be changed.
 
 Settings available:
 
@@ -49,7 +49,6 @@ Settings available:
 = What happens to Posts and Links belonging to a deleted user? =
 
 They're also deleted since the user deleting themselves will not be an administrator, and thus the option of reassignment unavailable.
-
 Note: Pages are considered Posts ( i.e. post_type=page ) and any Pages belonging to the deleted user will also be deleted.
 
 = Is it possible for a user to delete anyone but themselves? =
@@ -59,7 +58,6 @@ Absolutely not, the user deleted is only the currently logged in user, period.
 = What does the Shortcode display when the user is not logged in or their role is not allowed to delete themselves? =
 
 a) Nothing when using the self-closing Shortcode ( i.e. `[plugin_delete_me /]` ).
-
 b) However, when using the opening and closing Shortcode tags ( i.e. `[plugin_delete_me]` Content `[/plugin_delete_me]` ) the content inside the tags will appear instead of the delete link.
 
 = Where is a user sent after deleting themselves? =
@@ -72,12 +70,11 @@ Yes, users are prompted to confirm by Javascript dialog ( OK | Cancel ).
 
 = Does this plugin support WordPress Multisite? =
 
-No, not yet. The plugin will not load if it detects a WordPress Mulisite installation.
-If I have alot of requests for Multisite support I'll consider adding it.
+No. The plugin will not load if WordPress Mulisite is detected. If I have alot of requests for Multisite support I'll consider adding it.
 
-= Is this plugin available in languages other English? =
+= Is this plugin available in any languages other than English? =
 
-No, not yet. If I have alot of requests for localization I'll consider adding some.
+No. If I have alot of requests for localization I'll consider adding some.
 
 == Screenshots ==
 
