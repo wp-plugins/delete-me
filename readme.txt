@@ -5,7 +5,7 @@ Tags: delete, user delete, delete profile, user management
 Requires: WordPress 3.0+, PHP 5.2+
 Requires at least: 3.0
 Tested up to: 3.1
-Stable tag: 1.0
+Stable tag: 1.1
 
 Allow specific WordPress roles ( except administrator ) to delete themselves.
 
@@ -92,7 +92,7 @@ No. If I have alot of requests for localization I'll consider adding some.
 
 = 1.1 =
 
-* Added optional email notification.
+* Added optional detailed email notification when user deletes themselves.
 * Bugfix - Functions wp_delete_post and wp_delete_link undefined error corrected.
 
 = 1.0 =
@@ -103,7 +103,7 @@ No. If I have alot of requests for localization I'll consider adding some.
 
 = 1.1 =
 
-Added optional email notification.
+Added optional detailed email notification when user deletes themselves.
 Bugfix - Functions wp_delete_post and wp_delete_link undefined error corrected. Please upgrade immediately!
 
 = 1.0 =
