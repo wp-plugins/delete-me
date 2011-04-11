@@ -70,7 +70,7 @@ The `Settings -> Delete Me` subpanel lets you enter any URL you'd like to redire
 
 Yes, users are prompted to confirm by Javascript dialog ( OK | Cancel ).
 
-= Can I be notified of users who delete themselves and what was deleted? =
+= May I be notified of users who delete themselves and what was deleted? =
 
 Yes. The `Settings -> Delete Me` subpanel has a setting called "Email Notification", just check the box and save changes.
 
@@ -93,7 +93,7 @@ No. If I have alot of requests for localization I'll consider adding some.
 = 1.1 =
 
 * Added optional detailed email notification when user deletes themselves.
-* Bugfix - Functions wp_delete_post and wp_delete_link undefined error corrected.
+* Fixed undefined function errors for wp_delete_post and wp_delete_link when user has Posts or Links.
 
 = 1.0 =
 
@@ -103,8 +103,7 @@ No. If I have alot of requests for localization I'll consider adding some.
 
 = 1.1 =
 
-Added optional detailed email notification when user deletes themselves.
-Bugfix - Functions wp_delete_post and wp_delete_link undefined error corrected. Please upgrade immediately!
+This version contains a critical fix, please update immediately! See Changelog for details.
 
 = 1.0 =
 
