@@ -70,6 +70,10 @@ The `Settings -> Delete Me` subpanel lets you enter any URL you'd like to redire
 
 Yes, users are prompted to confirm by Javascript dialog ( OK | Cancel ).
 
+= Can I be notified of users who delete themselves and what was deleted? =
+
+Yes. The `Settings -> Delete Me` subpanel has a setting called "Email Notification", just check the box and save changes.
+
 = Does this plugin support WordPress Multisite? =
 
 No. The plugin will not load if WordPress Mulisite is detected. If I have alot of requests for Multisite support I'll consider adding it.
