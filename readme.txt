@@ -100,7 +100,7 @@ No. If I have alot of requests for localization I'll consider adding some.
 = 1.1 =
 
 Added optional email notification.
-Bugfix - Functions wp_delete_post and wp_delete_link undefined error corrected.
+Bugfix - Functions wp_delete_post and wp_delete_link undefined error corrected. Please upgrade immediately!
 
 = 1.0 =
 
