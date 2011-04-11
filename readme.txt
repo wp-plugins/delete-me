@@ -4,7 +4,7 @@ Donate link: http://www.clintcaldwell.com/donate/wordpress-plugin-delete-me.php
 Tags: delete, user delete, delete profile, user management
 Requires: WordPress 3.0+, PHP 5.2+
 Requires at least: 3.0
-Tested up to: 3.1
+Tested up to: 3.1.1
 Stable tag: 1.1
 
 Allow specific WordPress roles ( except administrator ) to delete themselves.
