@@ -76,7 +76,7 @@ Yes. The `Settings -> Delete Me` subpanel has a setting called "Email Notificati
 
 = Does this plugin support WordPress Multisite? =
 
-No. The plugin will not load if WordPress Mulisite is detected. If I have alot of requests for Multisite support I'll consider adding it.
+No. The plugin will not load if WordPress Multisite is detected. If I have alot of requests for Multisite support I'll consider adding it.
 
 = Is this plugin available in any languages other than English? =
 
