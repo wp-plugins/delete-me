@@ -34,6 +34,8 @@ Settings available:
 
 * Landing page URL ( i.e. where deleted users are redirected ).
 
+* E-mail notification when a user deletes themselves.
+
 == Installation ==
 
 1. Install automatically in WordPress on the `Plugins -> Add New` subpanel or upload the `delete-me` folder to the `/wp-content/plugins/` directory.
@@ -84,12 +86,22 @@ No. If I have alot of requests for localization I'll consider adding some.
 
 == Changelog ==
 
+= 1.1 =
+
+* Added optional email notification.
+* Bugfix - Functions wp_delete_post and wp_delete_link undefined error corrected.
+
 = 1.0 =
 
 * Initial release.
 
 == Upgrade Notice ==
 
+= 1.1 =
+
+Added optional email notification.
+Bugfix - Functions wp_delete_post and wp_delete_link undefined error corrected.
+
 = 1.0 =
 
-* Initial release.
+Initial release.
