@@ -3,7 +3,7 @@
 Plugin Name: Delete Me
 Plugin URI: http://wordpress.org/extend/plugins/delete-me/
 Description: Allow specific WordPress roles ( except administrator ) to delete themselves on the WordPress <code>Users &rarr; Your Profile</code> subpanel or on any Post or Page using the Shortcode <code>[plugin_delete_me /]</code>. Settings for this plugin are found on the <code>Settings &rarr; Delete Me</code> subpanel.
-Version: 1.0
+Version: 1.1
 Author: Clint Caldwell
 Author URI: http://www.clintcaldwell.com/
 License: GPL2 http://www.gnu.org/licenses/gpl-2.0.html
@@ -57,8 +57,10 @@ class plugin_delete_me {
 	
 	private $wp_roles;
 	private $wp_version;
+	private $wpdb;
 	private $user_ID;
 	private $user_login;
+	private $user_email;
 	
 	private $info;
 	private $option;
@@ -75,19 +77,21 @@ class plugin_delete_me {
 		
 		// Reference WordPress globals ( just to allow easier access, don't have to keep setting them global inside each method )
 		
-		global $wp_roles, $wp_version, $user_ID, $user_login;
+		global $wp_roles, $wp_version, $wpdb, $user_ID, $user_login, $user_email;
 		
 		$this->wp_roles = &$wp_roles;
 		$this->wp_version = &$wp_version;
+		$this->wpdb = &$wpdb;
 		$this->user_ID = &$user_ID;
 		$this->user_login = &$user_login;
+		$this->user_email = &$user_email;
 		
 		// Info
 		
 		$this->info = array(
 			'name' => 'Delete Me',
-			'uri' => 'http://www.clintcaldwell.com/wordpress-plugins/delete-me/',
-			'version' => 1.0,
+			'uri' => 'http://wordpress.org/extend/plugins/delete-me/',
+			'version' => 1.1,
 			'php_version_min' => 5.2,
 			'wp_version_min' => 3.0,
 			'option' => 'plugin_delete_me',
@@ -127,6 +131,7 @@ class plugin_delete_me {
 				'shortcode_style' => NULL,
 				'shortcode_anchor' => 'Delete Profile',
 				'shortcode_landing_url' => home_url(),
+				'email_notification' => false,
 				'uninstall_on_deactivate' => false
 			),
 			

@@ -71,6 +71,11 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 	$this->option['settings']['shortcode_anchor'] = ( empty( $this->POST['shortcode_anchor'] ) ) ? $this->default_option['settings']['shortcode_anchor'] : $this->POST['shortcode_anchor'];
 	$this->option['settings']['shortcode_landing_url'] = ( empty( $this->POST['shortcode_landing_url'] ) ) ? $this->default_option['settings']['shortcode_landing_url'] : $this->POST['shortcode_landing_url'];
 	
+	// E-mail notification
+	
+	settype( $this->POST['email_notification'], 'bool' );
+	$this->option['settings']['email_notification'] = $this->POST['email_notification'];
+	
 	// Uninstall on deactivate
 	
 	settype( $this->POST['uninstall_on_deactivate'], 'bool' );
@@ -198,6 +203,13 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 		<h3>Misc</h3>
 		
 		<table class="form-table">
+			
+			<tr>
+				<th scope="row"><label for="email_notification">E-mail Notification</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Send a text email with deletion details each time a user deletes themselves using <?php echo $this->info['name']; ?>. This will go to the site administrator email ( i.e. <?php echo get_option( 'admin_email' ); ?> ), the same email address used for new user notification.">[?]</a></th>
+				<td>
+					<input type="checkbox" id="email_notification" name="email_notification" value="1"<?php echo ( $this->option['settings']['email_notification'] == true ) ? ' checked="checked"' : ''; ?> />
+				</td>
+			</tr>
 			
 			<tr>
 				<th scope="row"><label for="uninstall_on_deactivate">Uninstall on Deactivate?</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Remove all settings and capabilities created by this plugin on 'Deactivate'?">[?]</a></th>
