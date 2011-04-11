@@ -43,7 +43,7 @@ if ( $this->option['settings']['email_notification'] == true ) :
 	
 	foreach ( $posts as $post ) {
 		
-		$posts_formatted[] = html_entity_decode( $post['post_title'], ENT_QUOTES, get_option( 'blog_charset' ) ) . "\n" . ucwords( $post['post_type'] ) . ' ' . get_permalink( $post['ID'] );
+		$posts_formatted[] = wp_specialchars_decode( $post['post_title'], ENT_QUOTES ) . "\n" . ucwords( $post['post_type'] ) . ' ' . get_permalink( $post['ID'] );
 		
 	}
 	
@@ -61,7 +61,7 @@ if ( $this->option['settings']['email_notification'] == true ) :
 	
 	foreach ( $links as $link ) {
 		
-		$links_formatted[] = html_entity_decode( $link['link_name'], ENT_QUOTES, get_option( 'blog_charset' ) ) . "\n" . $link['link_url'];
+		$links_formatted[] = wp_specialchars_decode( $link['link_name'], ENT_QUOTES ) . "\n" . $link['link_url'];
 		
 	}
 	
@@ -75,7 +75,7 @@ if ( $this->option['settings']['email_notification'] == true ) :
 	
 	$email = array();
 	$email['to'] = get_option( 'admin_email' );
-	$email['subject'] = '[' . get_option( 'blogname' ) . '] Deleted User Notification';
+	$email['subject'] = '[' . wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) . '] Deleted User Notification';
 	$email['message'] =
 	'Deleted user on your site ' . get_option( 'blogname' ) . ':' . "\n\n" .
 	
