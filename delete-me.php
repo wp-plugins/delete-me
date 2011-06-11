@@ -4,13 +4,13 @@ Plugin Name: Delete Me
 Plugin URI: http://wordpress.org/extend/plugins/delete-me/
 Description: Allow specific WordPress roles ( except administrator ) to delete themselves on the WordPress <code>Users &rarr; Your Profile</code> subpanel or on any Post or Page using the Shortcode <code>[plugin_delete_me /]</code>. Settings for this plugin are found on the <code>Settings &rarr; Delete Me</code> subpanel.
 Version: 1.1
-Author: Clint Caldwell
-Author URI: http://www.clintcaldwell.com/
+Author: Clinton Caldwell
+Author URI: http://wordpress.org/
 License: GPL2 http://www.gnu.org/licenses/gpl-2.0.html
 */
 
 /*
-Copyright (c) 2011 - Clint Caldwell <clint@clintcaldwell.com>
+Copyright (c) 2011 - Clinton Caldwell <cmc3215@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License, version 2, as 
