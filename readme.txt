@@ -6,6 +6,7 @@ Requires: WordPress 3.5.1+, PHP 5.2.4+
 Requires at least: 3.5.1
 Tested up to: 3.5.1
 Stable tag: 1.2
+License: GPL2 http://www.gnu.org/licenses/gpl-2.0.html
 
 Allow specific WordPress roles ( except Super Admin & Administrator ) to delete themselves.
 
