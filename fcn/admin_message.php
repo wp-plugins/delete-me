@@ -15,6 +15,6 @@ if ( is_admin() == false ) {
 	
 }
 ?>
-<div class="<?php echo $class; ?>">
-	<p><?php echo $message; ?></p>
+<div class="<?php echo $this->admin_message_class; ?>">
+	<p><?php echo $this->admin_message_content; ?></p>
 </div>

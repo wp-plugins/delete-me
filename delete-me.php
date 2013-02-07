@@ -2,15 +2,15 @@
 /*
 Plugin Name: Delete Me
 Plugin URI: http://wordpress.org/extend/plugins/delete-me/
-Description: Allow specific WordPress roles ( except administrator ) to delete themselves on the WordPress <code>Users &rarr; Your Profile</code> subpanel or on any Post or Page using the Shortcode <code>[plugin_delete_me /]</code>. Settings for this plugin are found on the <code>Settings &rarr; Delete Me</code> subpanel.
-Version: 1.1
+Description: Allow specific WordPress roles ( except Super Admin &amp; Administrator ) to delete themselves on the WordPress <code>Users &rarr; Your Profile</code> subpanel or on any Post or Page using the Shortcode <code>[plugin_delete_me /]</code>. Settings for this plugin are found on the <code>Settings &rarr; Delete Me</code> subpanel. Multisite and Network Activation supported.
+Version: 1.2
 Author: Clinton Caldwell
 Author URI: http://wordpress.org/
 License: GPL2 http://www.gnu.org/licenses/gpl-2.0.html
 */
 
 /*
-Copyright (c) 2011 - Clinton Caldwell <cmc3215@gmail.com>
+Copyright (c) 2013 - Clinton Caldwell <cmc3215@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License, version 2, as 
@@ -64,8 +64,9 @@ class plugin_delete_me {
 	
 	private $info;
 	private $option;
-	private $default_option;
-	
+	private $admin_message_class;
+	private $admin_message_content;
+		
 	private $GET;
 	private $POST;
 	
@@ -91,9 +92,9 @@ class plugin_delete_me {
 		$this->info = array(
 			'name' => 'Delete Me',
 			'uri' => 'http://wordpress.org/extend/plugins/delete-me/',
-			'version' => 1.1,
-			'php_version_min' => 5.2,
-			'wp_version_min' => 3.0,
+			'version' => '1.2',
+			'php_version_min' => '5.2.4',
+			'wp_version_min' => '3.5.1',
 			'option' => 'plugin_delete_me',
 			'shortcode' => 'plugin_delete_me',
 			'slug_prefix' => 'plugin_delete_me',
@@ -105,9 +106,9 @@ class plugin_delete_me {
 		
 		// Compatible?
 		
-		if ( $this->is_compatible() == false ) {
+		if ( $this->is_compatible() == false ) {				
 			
-			add_action( ( ( version_compare( $this->wp_version, 3.1, '>=' ) == true ) ? 'all_admin_notices' : 'admin_notices' ), array( &$this, 'is_compatible_notice' ) );
+			add_action( ( ( version_compare( $this->wp_version, '3.1', '>=' ) == true ) ? 'all_admin_notices' : 'admin_notices' ), array( &$this, 'is_compatible_notice' ) );
 			return; // stop object construction
 			
 		}
@@ -115,31 +116,6 @@ class plugin_delete_me {
 		// Option
 		
 		$this->option = $this->fetch_option();
-		
-		// Default option
-		
-		$this->default_option = array(
-			
-			// Settings
-			
-			'settings' => array(
-				'your_profile_class' => NULL,
-				'your_profile_style' => NULL,
-				'your_profile_anchor' => 'Delete Profile',
-				'your_profile_landing_url' => home_url(),
-				'shortcode_class' => NULL,
-				'shortcode_style' => NULL,
-				'shortcode_anchor' => 'Delete Profile',
-				'shortcode_landing_url' => home_url(),
-				'email_notification' => false,
-				'uninstall_on_deactivate' => false
-			),
-			
-			// Version
-			
-			'version' => $this->info['version']
-			
-		);
 		
 		// Register Activate & Deactivate Hooks
 		
@@ -242,7 +218,7 @@ class plugin_delete_me {
 	
 	// Activate
 	
-	public function activate() {
+	public function activate( $network_wide = false ) {
 		
 		include_once( $this->info['dirname'] . '/fcn/activate.php' );
 		
@@ -250,9 +226,27 @@ class plugin_delete_me {
 	
 	// Deactivate
 	
-	public function deactivate() {
+	public function deactivate( $network_wide = false ) {
 		
 		include_once( $this->info['dirname'] . '/fcn/deactivate.php' );
+		
+	}
+	
+	// New Blog
+	
+	public function new_blog( $blog_id ) {
+		
+		$plugin = basename( $this->info['dirname'] );
+		
+		if ( is_plugin_active_for_network( $plugin . '/' . $plugin . '.php' ) ) {
+			
+			switch_to_blog( $blog_id );
+			
+			$this->activate();
+			
+			restore_current_blog();
+			
+		}
 		
 	}
 	
@@ -275,6 +269,38 @@ class plugin_delete_me {
 	//-------------------------------------------------------------------------------------------------------------------------------
 	// PLUGIN OPTION
 	//-------------------------------------------------------------------------------------------------------------------------------
+	
+	// Default
+	
+	private function default_option() {
+		
+		return array(
+			
+			// Settings
+			
+			'settings' => array(
+				'your_profile_class' => NULL,
+				'your_profile_style' => NULL,
+				'your_profile_anchor' => 'Delete Profile',
+				'your_profile_landing_url' => home_url(),
+				'shortcode_class' => NULL,
+				'shortcode_style' => NULL,
+				'shortcode_anchor' => 'Delete Profile',
+				'shortcode_landing_url' => home_url(),
+				'ms_delete_from_network' => true,
+				'delete_comments' => false,
+				'email_notification' => false,
+				'uninstall_on_deactivate' => false
+				
+			),
+			
+			// Version
+			
+			'version' => $this->info['version']
+			
+		);
+		
+	}
 	
 	// Fetch
 	
@@ -308,10 +334,6 @@ class plugin_delete_me {
 			
 			return false;
 			
-		} elseif ( version_compare( $this->wp_version, 3.0, '>=' ) == true && is_multisite() == true ) {
-			
-			return false; // This plugin does not support WordPress Multisite ( introduced in WordPress 3.0 )
-			
 		} else {
 			
 			return true;
@@ -334,7 +356,7 @@ class plugin_delete_me {
 	
 	// Admin message
 	
-	private function admin_message( $class, $message ) {
+	public function admin_message() {
 		
 		include_once( $this->info['dirname'] . '/fcn/admin_message.php' );
 		
@@ -401,4 +423,3 @@ class plugin_delete_me {
 new plugin_delete_me();
 
 endif; // class_exists
-?>

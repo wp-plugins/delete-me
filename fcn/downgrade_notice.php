@@ -15,6 +15,6 @@ if ( isset( $this ) == false || get_class( $this ) != 'plugin_delete_me' ) {
 	
 	<p>Currently installed version = <?php echo $this->info['version']; ?></p>
 	
-	<p><a href="<?php echo esc_url( $this->info['uri'] ); ?>#downgrade">Visit plugin site</a> for more information or deactivate this plugin on the WordPress <code>Plugins</code> panel.</p> 
+	<p><a href="<?php echo esc_url( $this->info['uri'] ); ?>">Visit plugin site</a> for the latest version or deactivate this plugin on the WordPress <code>Plugins</code> panel.</p> 
 	
 </div>

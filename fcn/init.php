@@ -17,11 +17,15 @@ if ( isset( $this->option['version'] ) ) {
 	
 	if ( version_compare( $this->option['version'], $this->info['version'], '<' ) ) {
 		
-		$this->upgrade(); // do upgrade
+		// Upgrade
+		
+		$this->upgrade();
 		
 	} elseif ( version_compare( $this->option['version'], $this->info['version'], '>' ) ) {
 		
-		add_action( 'admin_notices', array( &$this, 'downgrade_notice' ) );
+		// Downgrade detected
+		
+		add_action( 'all_admin_notices', array( &$this, 'downgrade_notice' ) );
 		return; // stop executing file
 		
 	}
@@ -39,6 +43,10 @@ if ( isset( $this->GET[$this->info['trigger']] ) ) {
 	$this->delete_user();
 	
 }
+
+// Actions
+
+add_action( 'wpmu_new_blog', array( &$this, 'new_blog' ) );
 
 //-------------------------------------------------------------------------------------------------------------------------------
 // ADMIN
@@ -61,4 +69,3 @@ if ( is_admin() ) {
 // Actions
 
 add_action( 'wp', array( &$this, 'add_shortcodes' ) );
-?>

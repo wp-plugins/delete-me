@@ -15,10 +15,6 @@ if ( current_user_can( 'delete_users' ) == false ) {
 	
 }
 
-// Page URI
-
-$page_uri = $_SERVER['PHP_SELF'] . '?page=' . $this->GET['page'];
-
 // Form nonce
 
 $form_nonce_action = $this->GET['page'] . '_nonce_action';
@@ -49,6 +45,8 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 		
 	}
 	
+	$default_option = $this->default_option();
+	
 	// Users -> Your Profile
 	
 	settype( $this->POST['your_profile_class'], 'string' );
@@ -57,8 +55,8 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 	settype( $this->POST['your_profile_landing_url'], 'string' );
 	$this->option['settings']['your_profile_class'] = ( empty( $this->POST['your_profile_class'] ) ) ? NULL : $this->POST['your_profile_class'];
 	$this->option['settings']['your_profile_style'] = ( empty( $this->POST['your_profile_style'] ) ) ? NULL : $this->POST['your_profile_style'];
-	$this->option['settings']['your_profile_anchor'] = ( empty( $this->POST['your_profile_anchor'] ) ) ? $this->default_option['settings']['your_profile_anchor'] : $this->POST['your_profile_anchor'];
-	$this->option['settings']['your_profile_landing_url'] = ( empty( $this->POST['your_profile_landing_url'] ) ) ? $this->default_option['settings']['your_profile_landing_url'] : $this->POST['your_profile_landing_url'];
+	$this->option['settings']['your_profile_anchor'] = ( empty( $this->POST['your_profile_anchor'] ) ) ? $default_option['settings']['your_profile_anchor'] : $this->POST['your_profile_anchor'];
+	$this->option['settings']['your_profile_landing_url'] = ( empty( $this->POST['your_profile_landing_url'] ) ) ? $default_option['settings']['your_profile_landing_url'] : $this->POST['your_profile_landing_url'];
 	
 	// Shortcode
 	
@@ -68,8 +66,18 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 	settype( $this->POST['shortcode_landing_url'], 'string' );
 	$this->option['settings']['shortcode_class'] = ( empty( $this->POST['shortcode_class'] ) ) ? NULL : $this->POST['shortcode_class'];
 	$this->option['settings']['shortcode_style'] = ( empty( $this->POST['shortcode_style'] ) ) ? NULL : $this->POST['shortcode_style'];
-	$this->option['settings']['shortcode_anchor'] = ( empty( $this->POST['shortcode_anchor'] ) ) ? $this->default_option['settings']['shortcode_anchor'] : $this->POST['shortcode_anchor'];
-	$this->option['settings']['shortcode_landing_url'] = ( empty( $this->POST['shortcode_landing_url'] ) ) ? $this->default_option['settings']['shortcode_landing_url'] : $this->POST['shortcode_landing_url'];
+	$this->option['settings']['shortcode_anchor'] = ( empty( $this->POST['shortcode_anchor'] ) ) ? $default_option['settings']['shortcode_anchor'] : $this->POST['shortcode_anchor'];
+	$this->option['settings']['shortcode_landing_url'] = ( empty( $this->POST['shortcode_landing_url'] ) ) ? $default_option['settings']['shortcode_landing_url'] : $this->POST['shortcode_landing_url'];
+	
+	// Multisite: Delete from Network
+	
+	settype( $this->POST['ms_delete_from_network'], 'bool' );
+	$this->option['settings']['ms_delete_from_network'] = $this->POST['ms_delete_from_network'];
+	
+	// Delete Comments
+	
+	settype( $this->POST['delete_comments'], 'bool' );
+	$this->option['settings']['delete_comments'] = $this->POST['delete_comments'];
 	
 	// E-mail notification
 	
@@ -84,7 +92,12 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 	// Save Option
 	
 	$this->save_option();
-	$this->admin_message( 'updated', 'Changes Saved' );
+	
+	// Print admin message
+	
+	$this->admin_message_class = 'updated';
+	$this->admin_message_content = 'Changes Saved';
+	$this->admin_message();
 	
 }
 ?>
@@ -94,7 +107,7 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 	
 	<h2><?php echo $this->info['name']; ?> Settings</h2>
 	
-	<form action="<?php echo $page_uri; ?>" method="post">
+	<form action="options-general.php?page=<?php echo $this->GET['page']; ?>" method="post">
 		
 		<h3>Roles</h3>
 		
@@ -107,13 +120,13 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 				
 				foreach ( $this->wp_roles->role_objects as $role ) {
 					
-					$disabled = ( $role->name == 'administrator' ) ? ' disabled="disabled"' : '';
+					$disabled = ( $role->name == 'administrator' ) ? ' disabled="disabled"' : '';						
 					
 					?>
 					
 					<label>
 						<input type="checkbox" name="roles[<?php echo $role->name; ?>]" value="1"<?php echo ( $role->has_cap( $this->info['cap'] ) == true ) ? ' checked="checked"' : ''; echo $disabled; ?> />
-						<?php echo esc_html( $this->wp_roles->roles[$role->name]['name'] ); ?>
+						<?php if ( $role->name == 'administrator' ) { echo esc_html( 'Super Admin & ' ); } echo esc_html( $this->wp_roles->roles[$role->name]['name'] ); ?>
 					</label>
 					<br />
 					
@@ -126,9 +139,10 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 				<br />
 				
 				<div>
-					Administrators are disabled because they can already delete users in WordPress, no need to complicate that.
-					<br />
-					For testing purposes you'll want to use a separate WordPress login with a role other than administrator so the delete links you configure are visible to you.
+					<span class="description">
+						Super Admins &amp; Administrators are disabled because they can already delete users in WordPress, no need to complicate that.
+						For testing purposes you'll want to use a separate WordPress login with a role other than Super Admin &amp; Administrator so the delete links you configure are visible to you.
+					</span>
 				</div>
 				</td>
 			</tr>
@@ -140,7 +154,7 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 		<table class="form-table">
 		
 			<tr>
-				<th scope="row"><label for="your_profile_anchor">Link</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Class &amp; Style are optional. The last box is the clickable content of the link in raw HTML ( e.g. Delete User, Posts &amp;amp; Pages --- or --- &lt;img alt=&quot;&quot; src=&quot;http://www.example.com/image.png&quot; width=&quot;100&quot; height=&quot;20&quot; /&gt; )">[?]</a></th>
+				<th scope="row"><label for="your_profile_anchor">Link</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Class &amp; Style are optional. The last box is the clickable content of the link in raw HTML ( e.g. Delete User --- or --- &lt;img alt=&quot;&quot; src=&quot;http://www.example.com/image.png&quot; width=&quot;100&quot; height=&quot;20&quot; /&gt; )">[?]</a></th>
 				<td>
 					<code>
 						&lt;a
@@ -167,7 +181,7 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 		<table class="form-table">
 			
 			<tr>
-				<th scope="row"><label for="shortcode_anchor">Link</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Class &amp; Style are optional. The last box is the clickable content of the link in raw HTML ( e.g. Delete User, Posts &amp;amp; Pages --- or --- &lt;img alt=&quot;&quot; src=&quot;http://www.example.com/image.png&quot; width=&quot;100&quot; height=&quot;20&quot; /&gt; )">[?]</a></th>
+				<th scope="row"><label for="shortcode_anchor">Link</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Class &amp; Style are optional. The last box is the clickable content of the link in raw HTML ( e.g. Delete User --- or --- &lt;img alt=&quot;&quot; src=&quot;http://www.example.com/image.png&quot; width=&quot;100&quot; height=&quot;20&quot; /&gt; )">[?]</a></th>
 				<td>
 					<code>
 						&lt;a
@@ -194,15 +208,35 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 					<br />
 					or
 					<br />
-					<code>[<?php echo $this->info['shortcode']; ?>]</code>Instead of a delete link, this content is shown to anyone unable to delete themselves.<code>[/<?php echo $this->info['shortcode']; ?>]</code>
+					<code>[<?php echo $this->info['shortcode']; ?>]</code><span class="description">Instead of a delete link, content between the Shortcode open and close tags is shown to anyone unable to delete themselves.</span><code>[/<?php echo $this->info['shortcode']; ?>]</code>
 				</td>
 			</tr>
 			
 		</table>
 		
-		<h3>Misc</h3>
+		<h3>Multisite <span class="description">( <?php echo ( is_multisite() ) ? 'On' : 'Off - The setting below applies only to WordPress Multisite installations.'; ?> )</span></h3>
 		
 		<table class="form-table">
+			
+			<tr>
+				<th scope="row"><label for="ms_delete_from_network">Delete From Network</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="When a user deletes themselves from this Site, IF THEY DON'T BELONG TO ANY OTHER NETWORK SITES their user will be deleted permanently from the Network.">[?]</a></th>
+				<td>
+					<input type="checkbox" id="ms_delete_from_network" name="ms_delete_from_network" value="1"<?php echo ( $this->option['settings']['ms_delete_from_network'] == true ) ? ' checked="checked"' : ''; ?> />
+				</td>
+			</tr>
+			
+		</table>
+		
+		<h3>Miscellaneous</h3>
+		
+		<table class="form-table">
+			
+			<tr>
+				<th scope="row"><label for="delete_comments">Delete Comments</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Delete all comments by the user when they delete themselves.  MULTISITE:  Only comments on the current Site are deleted, other Network Sites remain unaffected.">[?]</a></th>
+				<td>
+					<input type="checkbox" id="delete_comments" name="delete_comments" value="1"<?php echo ( $this->option['settings']['delete_comments'] == true ) ? ' checked="checked"' : ''; ?> />
+				</td>
+			</tr>
 			
 			<tr>
 				<th scope="row"><label for="email_notification">E-mail Notification</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Send a text email with deletion details each time a user deletes themselves using <?php echo $this->info['name']; ?>. This will go to the site administrator email ( i.e. <?php echo get_option( 'admin_email' ); ?> ), the same email address used for new user notification.">[?]</a></th>
@@ -212,7 +246,7 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 			</tr>
 			
 			<tr>
-				<th scope="row"><label for="uninstall_on_deactivate">Uninstall on Deactivate?</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Remove all settings and capabilities created by this plugin on 'Deactivate'?">[?]</a></th>
+				<th scope="row"><label for="uninstall_on_deactivate">Uninstall on Deactivate</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Remove all settings and capabilities created by this plugin on &quot;Deactivate&quot;.">[?]</a></th>
 				<td>
 					<input type="checkbox" id="uninstall_on_deactivate" name="uninstall_on_deactivate" value="1"<?php echo ( $this->option['settings']['uninstall_on_deactivate'] == true ) ? ' checked="checked"' : ''; ?> />
 				</td>

@@ -1,18 +1,19 @@
 === Delete Me ===
 Contributors: cmc3215
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L5VY6QDSAAZUL
-Tags: delete, user delete, delete profile, user management
-Requires: WordPress 3.0+, PHP 5.2+
-Requires at least: 3.0
-Tested up to: 3.3
-Stable tag: 1.1
+Tags: delete, user delete, delete profile, user management, multisite
+Requires: WordPress 3.5.1+, PHP 5.2.4+
+Requires at least: 3.5.1
+Tested up to: 3.5.1
+Stable tag: 1.2
 
-Allow specific WordPress roles ( except administrator ) to delete themselves.
+Allow specific WordPress roles ( except Super Admin & Administrator ) to delete themselves.
 
 == Description ==
 
-Allow specific WordPress roles ( except administrator ) to delete themselves on the `Users -> Your Profile` subpanel or
+Allow specific WordPress roles ( except Super Admin & Administrator ) to delete themselves on the `Users -> Your Profile` subpanel or
 on any Post or Page using the Shortcode `[plugin_delete_me /]`. Settings for this plugin are found on the `Settings -> Delete Me` subpanel.
+Multisite and Network Activation supported.
 
 How it works:
 
@@ -20,7 +21,7 @@ How it works:
 
 * User is prompted to confirm they want to delete themselves ( OK | Cancel ).
 
-* If ( OK ) the user is deleted along with all their Posts and Links.
+* If ( OK ) the user is deleted along with all their Posts, Links, and ( optionally ) Comments.
 
 * Deleted user is redirected to the landing page URL, which by default is your home page, but can be changed.
 
@@ -33,6 +34,10 @@ Settings available:
 * `<a>` tag clickable content ( i.e. text, image, both ) of the delete link.
 
 * Landing page URL ( i.e. where deleted users are redirected ).
+
+* Multisite: Delete user from Network if they no longer belong to any other Network Sites after deletion from current Site.
+
+* Delete comments.
 
 * E-mail notification when a user deletes themselves.
 
@@ -48,10 +53,13 @@ Settings available:
 
 == Frequently Asked Questions ==
 
-= What happens to Posts and Links belonging to a deleted user? =
+= What happens to Posts, Links, and ( optionally ) Comments belonging to a deleted user? =
 
-They're also deleted since the user deleting themselves will not be an administrator, and thus the option of reassignment unavailable.
-Note: Pages are considered Posts ( i.e. post_type=page ) and any Pages belonging to the deleted user will also be deleted.
+Most Post types and Comments are moved to Trash. Links are always deleted permanently.
+
+= Does this plugin support WordPress Multisite? =
+
+Yes, Network Activation and single Site activation are both supported. Users and their content will only be deleted from the Site they delete themselves from, other Network Sites will be unaffected.
 
 = Is it possible for a user to delete anyone but themselves? =
 
@@ -72,15 +80,11 @@ Yes, users are prompted to confirm by Javascript dialog ( OK | Cancel ).
 
 = May I be notified of users who delete themselves and what was deleted? =
 
-Yes. The `Settings -> Delete Me` subpanel has a setting called "Email Notification", just check the box and save changes.
+Yes. The `Settings -> Delete Me` subpanel has a setting called "E-mail Notification", just check the box and save changes.
 
-= Does this plugin support WordPress Multisite? =
+= Is there a way to customize the Javascript dialog warning? =
 
-No. The plugin will not load if WordPress Multisite is detected. If I have alot of requests for Multisite support I'll consider adding it.
-
-= Is this plugin available in any languages other than English? =
-
-No. If I have alot of requests for localization I'll consider adding some.
+No. However, when the setting "Delete Comments" is checked the warning will change to mention comments will also be lost.
 
 == Screenshots ==
 
@@ -90,9 +94,17 @@ No. If I have alot of requests for localization I'll consider adding some.
 
 == Changelog ==
 
+= 1.2 =
+
+* Added Multisite and Network Activation support.
+* Added setting for Multisite to delete user from Network if user no longer belongs to any Network Sites.
+* Added setting to delete comments.
+* Edited e-mail notification to list the number of comments deleted.
+* Edited Javascript delete warning to include "Comments" in the warning if the setting "Delete Comments" is checked.
+
 = 1.1 =
 
-* Added optional detailed email notification when user deletes themselves.
+* Added setting for detailed e-mail notification when user deletes themselves.
 * Fixed undefined function errors for wp_delete_post and wp_delete_link when user has Posts or Links.
 
 = 1.0 =
@@ -100,6 +112,10 @@ No. If I have alot of requests for localization I'll consider adding some.
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.2 =
+
+This version supports Multisite and Network Activation. A setting to delete comments was also added. See Changelog for details.
 
 = 1.1 =
 
