@@ -1,11 +1,7 @@
 <?php
 // File called by class?
 
-if ( isset( $this ) == false || get_class( $this ) != 'plugin_delete_me' ) {
-	
-	exit;
-	
-}
+if ( isset( $this ) == false || get_class( $this ) != 'plugin_delete_me' ) exit;
 
 //-------------------------------------------------------------------------------------------------------------------------------
 // ADMIN & FRONT-END
@@ -38,11 +34,7 @@ $this->GET = $this->striptrim_deep( $_GET );
 
 // Delete user if trigger in URL
 
-if ( isset( $this->GET[$this->info['trigger']] ) ) {
-	
-	$this->delete_user();
-	
-}
+if ( isset( $this->GET[$this->info['trigger']] ) ) $this->delete_user();
 
 // Actions
 
@@ -55,9 +47,7 @@ add_action( 'wpmu_new_blog', array( &$this, 'new_blog' ) );
 if ( is_admin() ) {
 	
 	$this->POST = $this->striptrim_deep( $_POST ); // Copy $_POST | stripslashes, trim
-	
-	$this->admin_init();
-	
+	$this->admin_init();	
 	return;
 	
 }

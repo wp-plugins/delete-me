@@ -1,11 +1,7 @@
 <?php
 // File called by class?
 
-if ( isset( $this ) == false || get_class( $this ) != 'plugin_delete_me' ) {
-	
-	exit;
-	
-}
+if ( isset( $this ) == false || get_class( $this ) != 'plugin_delete_me' ) exit;
 
 // Record previous version
 

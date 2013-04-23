@@ -5,14 +5,14 @@ Tags: delete, user delete, delete profile, user management, multisite
 Requires: WordPress 3.5.1+, PHP 5.2.4+
 Requires at least: 3.5.1
 Tested up to: 3.5.1
-Stable tag: 1.2
+Stable tag: 1.3
 License: GPL2 http://www.gnu.org/licenses/gpl-2.0.html
 
-Allow specific WordPress roles ( except Super Admin & Administrator ) to delete themselves.
+Allow specific WordPress roles to delete themselves.
 
 == Description ==
 
-Allow specific WordPress roles ( except Super Admin & Administrator ) to delete themselves on the `Users -> Your Profile` subpanel or
+Allow specific WordPress roles to delete themselves on the `Users -> Your Profile` subpanel or
 on any Post or Page using the Shortcode `[plugin_delete_me /]`. Settings for this plugin are found on the `Settings -> Delete Me` subpanel.
 Multisite and Network Activation supported.
 
@@ -20,21 +20,23 @@ How it works:
 
 * A user clicks the delete link, which by default says `Delete Profile`, but can be changed.
 
-* User is prompted to confirm they want to delete themselves ( OK | Cancel ).
+* User is asked to confirm they want to delete themselves, [OK] or [Cancel].
 
-* If ( OK ) the user is deleted along with all their Posts, Links, and ( optionally ) Comments.
+* If [OK] the user is deleted along with all their Posts, Links, and (optionally) Comments.
 
-* Deleted user is redirected to the landing page URL, which by default is your home page, but can be changed.
+* Deleted user is redirected to the landing page URL, which by default is your homepage, but can be changed.
 
 Settings available:
 
-* Select specific WordPress roles ( e.g. Subscriber, Contributor, etc. ) you want to allow to delete themselves using Delete Me.
+* Select specific WordPress roles (e.g. Subscriber) you want to allow to delete themselves using Delete Me.
 
 * `class` and `style` attributes of the delete link.
 
-* `<a>` tag clickable content ( i.e. text, image, both ) of the delete link.
+* `<a>` tag clickable content of the delete link.
 
-* Landing page URL ( i.e. where deleted users are redirected ).
+* Javascript confirm text.
+
+* Landing page URL.
 
 * Multisite: Delete user from Network if they no longer belong to any other Network Sites after deletion from current Site.
 
@@ -50,11 +52,11 @@ Settings available:
 
 3. Go to the `Settings -> Delete Me` subpanel. Select the WordPress roles you want to allow to delete themselves using Delete Me and save changes.
 
-4. The delete link will be placed automatically on the `Users -> Your Profile` subpanel for roles you allow, but if you have a Post or Page you'd like the delete link to appear on just copy and paste the Shortcode `[plugin_delete_me /]` there. 
+4. The delete link will be placed automatically on the `Users -> Your Profile` subpanel for roles you allow, but if you have a Post or Page you'd like the delete link to appear on just copy and paste the Shortcode `[plugin_delete_me /]` there. A custom PHP template can use the Shortcode this way `<?php echo do_shortcode('[plugin_delete_me /]'); ?>`
 
 == Frequently Asked Questions ==
 
-= What happens to Posts, Links, and ( optionally ) Comments belonging to a deleted user? =
+= What happens to Posts, Links, and (optionally) Comments belonging to a deleted user? =
 
 Most Post types and Comments are moved to Trash. Links are always deleted permanently.
 
@@ -68,24 +70,19 @@ Absolutely not, the user deleted is only the currently logged in user, period.
 
 = What does the Shortcode display when the user is not logged in or their role is not allowed to delete themselves? =
 
-a) Nothing when using the self-closing Shortcode tag ( i.e. `[plugin_delete_me /]` ).
-b) However, when using the opening and closing Shortcode tags ( i.e. `[plugin_delete_me]` Content `[/plugin_delete_me]` ) the content inside the tags will appear instead of the delete link.
+Nothing when using the self-closing Shortcode tag (i.e. `[plugin_delete_me /]`). However, when the opening and closing Shortcode tags are used (i.e. `[plugin_delete_me]`Content`[/plugin_delete_me]`) the content inside the tags will appear instead of the delete link.
 
 = Where is a user sent after deleting themselves? =
 
-The `Settings -> Delete Me` subpanel lets you enter any URL you'd like to redirect deleted users to, set to home page by default.
+The `Settings -> Delete Me` subpanel lets you enter any URL you'd like to redirect deleted users to, set to homepage by default.
 
-= Is there any confirmation prompt before the user deletes themselves? =
+= Is there a confirmation before the user deletes themselves? =
 
-Yes, users are prompted to confirm by Javascript dialog ( OK | Cancel ).
+Yes, users must confirm by Javascript dialog box [OK] or [Cancel].
 
 = May I be notified of users who delete themselves and what was deleted? =
 
 Yes. The `Settings -> Delete Me` subpanel has a setting called "E-mail Notification", just check the box and save changes.
-
-= Is there a way to customize the Javascript dialog warning? =
-
-No. However, when the setting "Delete Comments" is checked the warning will change to mention comments will also be lost.
 
 == Screenshots ==
 
@@ -94,6 +91,10 @@ No. However, when the setting "Delete Comments" is checked the warning will chan
 3. `Settings -> Delete Me` subpanel.
 
 == Changelog ==
+
+= 1.3 =
+
+* Added setting to customize Javascript confirm text.
 
 = 1.2 =
 

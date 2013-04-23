@@ -2,8 +2,8 @@
 /*
 Plugin Name: Delete Me
 Plugin URI: http://wordpress.org/extend/plugins/delete-me/
-Description: Allow specific WordPress roles ( except Super Admin &amp; Administrator ) to delete themselves on the WordPress <code>Users &rarr; Your Profile</code> subpanel or on any Post or Page using the Shortcode <code>[plugin_delete_me /]</code>. Settings for this plugin are found on the <code>Settings &rarr; Delete Me</code> subpanel. Multisite and Network Activation supported.
-Version: 1.2
+Description: Allow specific WordPress roles to delete themselves on the WordPress <code>Users &rarr; Your Profile</code> subpanel or on any Post or Page using the Shortcode <code>[plugin_delete_me /]</code>. Settings for this plugin are found on the <code>Settings &rarr; Delete Me</code> subpanel. Multisite and Network Activation supported.
+Version: 1.3
 Author: Clinton Caldwell
 Author URI: http://wordpress.org/
 License: GPL2 http://www.gnu.org/licenses/gpl-2.0.html
@@ -26,19 +26,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-// Prevent this plugin file from being accessed directly ( should be loaded by WordPress )
+// Prevent this plugin file from being accessed directly (should be loaded by WordPress)
 
-if ( realpath( __FILE__ ) === realpath( $_SERVER['SCRIPT_FILENAME'] ) ) {
-	
-	exit;
-	
-}
+if ( realpath( __FILE__ ) === realpath( $_SERVER['SCRIPT_FILENAME'] ) ) exit;
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 //   
-//   THIS PLUGIN IS ONE CLASS ( plugin_delete_me )
+//   THIS PLUGIN IS ONE CLASS (plugin_delete_me)
 //   
-// - The "fcn" directory contains functions ( or methods ) within the class that are not required to be loaded on every page so they're
+// - The "fcn" directory contains functions (or methods) within the class that are not required to be loaded on every page so they're
 //   only loaded when needed to make things faster.
 //   
 // - The "license" directory contains a copy of the GPL2 license this plugin is released under.
@@ -92,7 +88,7 @@ class plugin_delete_me {
 		$this->info = array(
 			'name' => 'Delete Me',
 			'uri' => 'http://wordpress.org/extend/plugins/delete-me/',
-			'version' => '1.2',
+			'version' => '1.3',
 			'php_version_min' => '5.2.4',
 			'wp_version_min' => '3.5.1',
 			'option' => 'plugin_delete_me',
@@ -282,10 +278,12 @@ class plugin_delete_me {
 				'your_profile_class' => NULL,
 				'your_profile_style' => NULL,
 				'your_profile_anchor' => 'Delete Profile',
+				'your_profile_js_confirm' => 'WARNING!\n\nAll your Posts and Links will be deleted.\n\nAre you sure you want to delete user %username%?',
 				'your_profile_landing_url' => home_url(),
 				'shortcode_class' => NULL,
 				'shortcode_style' => NULL,
 				'shortcode_anchor' => 'Delete Profile',
+				'shortcode_js_confirm' => 'WARNING!\n\nAll your Posts and Links will be deleted.\n\nAre you sure you want to delete user %username%?',
 				'shortcode_landing_url' => home_url(),
 				'ms_delete_from_network' => true,
 				'delete_comments' => false,

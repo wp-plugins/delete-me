@@ -1,38 +1,21 @@
 <?php
 // File called by class?
 
-if ( isset( $this ) == false || get_class( $this ) != 'plugin_delete_me' ) {
-	
-	exit;
-	
-}
+if ( isset( $this ) == false || get_class( $this ) != 'plugin_delete_me' ) exit;
 
 // Does user have the capability?
 
-if ( current_user_can( $this->info['cap'] ) == false || ( is_multisite() && is_super_admin() ) ) {
-	
-	return; // stop executing file
-	
-}
+if ( current_user_can( $this->info['cap'] ) == false || ( is_multisite() && is_super_admin() ) ) return; // stop executing file
 
 // Does the trigger value match the currently logged in user ID?
 
-if ( empty( $this->user_ID ) || $this->GET[$this->info['trigger']] != $this->user_ID ) {
-	
-	return; // stop executing file
-	
-}
+if ( empty( $this->user_ID ) || $this->GET[$this->info['trigger']] != $this->user_ID ) return; // stop executing file
 
 // Nonce
 
-if ( isset( $this->GET[$this->info['nonce']] ) == false || wp_verify_nonce( $this->GET[$this->info['nonce']], $this->info['nonce'] ) == false ) {
-	
-	return; // stop executing file
-	
-}
+if ( isset( $this->GET[$this->info['nonce']] ) == false || wp_verify_nonce( $this->GET[$this->info['nonce']], $this->info['nonce'] ) == false ) return; // stop executing file
 
 // Retrieve the Posts, Links, and Comments belonging to the user...
-// Multisite: Manually delete Posts and Links
 // Manually delete Comments
 
 include_once( ABSPATH . WPINC . '/post.php' ); // wp_delete_post
@@ -122,23 +105,16 @@ if ( $this->option['settings']['email_notification'] == true ) :
 	$email['subject'] = '[' . wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) . '] Deleted User Notification';
 	$email['message'] =
 	'Deleted user on your site ' . wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ) . ':' . "\n\n" .
-	
-	'Username: ' . $this->user_login . "\n\n" .
-	
-	'E-mail: ' . $this->user_email . "\n\n" .
-	
-	'This user deleted themselves using the WordPress plugin ' . $this->info['name'] . "\n\n" .
-	
+	'Username: ' . $this->user_login . "\n\n" .	
+	'E-mail: ' . $this->user_email . "\n\n" .	
+	'This user deleted themselves using the WordPress plugin ' . $this->info['name'] . "\n\n" .	
 	count( $posts_list ) . ' Post(s)' . "\n" .
 	'----------------------------------------------------------------------' . "\n" .
-	implode( "\n\n", $posts_list ) . "\n\n" .
-	
+	implode( "\n\n", $posts_list ) . "\n\n" .	
 	count( $links_list ) . ' Link(s)' . "\n" .
 	'----------------------------------------------------------------------' . "\n" .
-	implode( "\n\n", $links_list ) . "\n\n" .
-	
-	count( $comments_list ) . ' Comment(s)';
-	
+	implode( "\n\n", $links_list ) . "\n\n" .	
+	count( $comments_list ) . ' Comment(s)';	
 	wp_mail( $email['to'], $email['subject'], $email['message'] );
 	
 endif;
