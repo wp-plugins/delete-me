@@ -5,7 +5,6 @@ $plugin_cap = $plugin_option = 'plugin_' . str_replace( '-', '_', basename( dirn
 global $wpdb, $wp_roles;
 
 // Remove capability and delete option
-
 if ( is_multisite() == false ) {
 	
 	foreach ( $wp_roles->role_objects as $role ) $role->remove_cap( $plugin_cap );
