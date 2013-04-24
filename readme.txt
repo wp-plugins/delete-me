@@ -115,6 +115,10 @@ Yes. The `Settings -> Delete Me` subpanel has a setting called "E-mail Notificat
 
 == Upgrade Notice ==
 
+= 1.3 =
+
+This version added a setting to customize the text on the Javascript confirm dialog box.
+
 = 1.2 =
 
 This version supports Multisite and Network Activation. A setting to delete comments was also added. See Changelog for details.
