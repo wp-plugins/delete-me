@@ -3,7 +3,7 @@
 Plugin Name: Delete Me
 Plugin URI: http://wordpress.org/extend/plugins/delete-me/
 Description: Allow specific WordPress roles to delete themselves on the WordPress <code>Users &rarr; Your Profile</code> subpanel or on any Post or Page using the Shortcode <code>[plugin_delete_me /]</code>. Settings for this plugin are found on the <code>Settings &rarr; Delete Me</code> subpanel. Multisite and Network Activation supported.
-Version: 1.3
+Version: 1.4
 Author: Clinton Caldwell
 Author URI: http://wordpress.org/
 License: GPL2 http://www.gnu.org/licenses/gpl-2.0.html
@@ -26,31 +26,12 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-// Prevent this plugin file from being accessed directly (should be loaded by WordPress)
-
-if ( realpath( __FILE__ ) === realpath( $_SERVER['SCRIPT_FILENAME'] ) ) exit;
-
-//--------------------------------------------------------------------------------------------------------------------------------------
-//   
-//   THIS PLUGIN IS ONE CLASS (plugin_delete_me)
-//   
-// - The "fcn" directory contains functions (or methods) within the class that are not required to be loaded on every page so they're
-//   only loaded when needed to make things faster.
-//   
-// - The "license" directory contains a copy of the GPL2 license this plugin is released under.
-//   
-// - The "screenshot-{digit}" files in this directory are just my screenshots of this plugin and are not required for the plugin to work.
-//   
-//--------------------------------------------------------------------------------------------------------------------------------------
+if ( realpath( __FILE__ ) === realpath( $_SERVER['SCRIPT_FILENAME'] ) ) exit; // prevent direct access
 
 if ( class_exists( 'plugin_delete_me' ) == false ) :
 
 class plugin_delete_me {
-	
-	//-------------------------------------------------------------------------------------------------------------------------------
-	// PROPERTIES
-	//-------------------------------------------------------------------------------------------------------------------------------
-	
+		
 	private $wp_roles;
 	private $wp_version;
 	private $wpdb;
@@ -62,20 +43,14 @@ class plugin_delete_me {
 	private $option;
 	private $admin_message_class;
 	private $admin_message_content;
-		
+	
 	private $GET;
 	private $POST;
 	
-	//-------------------------------------------------------------------------------------------------------------------------------
-	// METHODS
-	//-------------------------------------------------------------------------------------------------------------------------------
-	
+	// Construct
 	public function __construct() {
 		
-		// Reference WordPress globals ( just to allow easier access, don't have to keep setting them global inside each method )
-		
 		global $wp_roles, $wp_version, $wpdb, $user_ID, $user_login, $user_email;
-		
 		$this->wp_roles = &$wp_roles;
 		$this->wp_version = &$wp_version;
 		$this->wpdb = &$wpdb;
@@ -83,12 +58,10 @@ class plugin_delete_me {
 		$this->user_login = &$user_login;
 		$this->user_email = &$user_email;
 		
-		// Info
-		
 		$this->info = array(
 			'name' => 'Delete Me',
 			'uri' => 'http://wordpress.org/extend/plugins/delete-me/',
-			'version' => '1.3',
+			'version' => '1.4',
 			'php_version_min' => '5.2.4',
 			'wp_version_min' => '3.5.1',
 			'option' => 'plugin_delete_me',
@@ -100,228 +73,21 @@ class plugin_delete_me {
 			'dirname' => dirname( __FILE__ )
 		);
 		
-		// Compatible?
-		
 		if ( $this->is_compatible() == false ) {				
 			
-			add_action( ( ( version_compare( $this->wp_version, '3.1', '>=' ) == true ) ? 'all_admin_notices' : 'admin_notices' ), array( &$this, 'is_compatible_notice' ) );
+			add_action( ( ( version_compare( $this->wp_version, '3.1', '>=' ) == true ) ? 'all_admin_notices' : 'admin_notices' ), array( &$this, 'incompatible_notice' ) );
 			return; // stop object construction
 			
 		}
 		
-		// Option
-		
 		$this->option = $this->fetch_option();
-		
-		// Register Activate & Deactivate Hooks
-		
 		register_activation_hook( __FILE__, array( &$this, 'activate' ) );
 		register_deactivation_hook( __FILE__, array( &$this, 'deactivate' ) );
-		
-		// Initialize plugin after WordPress has loaded
-		
 		add_action( 'wp_loaded', array( &$this, 'init' ) );
 		
 	}
 	
-	//-------------------------------------------------------------------------------------------------------------------------------
-	// WP LOADED - INIT
-	//-------------------------------------------------------------------------------------------------------------------------------
-	
-	// Init
-	
-	public function init() {
-		
-		include_once( $this->info['dirname'] . '/fcn/init.php' );
-		
-	}
-	
-	// Admin init
-	
-	private function admin_init() {
-		
-		include_once( $this->info['dirname'] . '/fcn/admin_init.php' );
-		
-	}
-	
-	//-------------------------------------------------------------------------------------------------------------------------------
-	// FRONT-END
-	//-------------------------------------------------------------------------------------------------------------------------------
-	
-	// Add shortcode
-	
-	public function add_shortcodes() {
-		
-		add_shortcode( $this->info['shortcode'], array( &$this, 'shortcode_' . $this->info['shortcode'] ) );
-		
-	}
-	
-	// Shortcode
-	
-	public function shortcode_plugin_delete_me( $atts = array(), $content = '', $code = '' ) {
-		
-		include_once( $this->info['dirname'] . '/fcn/shortcode_plugin_delete_me.php' );
-		
-		return ( isset( $longcode ) ) ? $longcode : $content;
-		
-	}
-	
-	//-------------------------------------------------------------------------------------------------------------------------------
-	// ADMIN - PAGE CALLBACKS
-	//-------------------------------------------------------------------------------------------------------------------------------
-	
-	// Settings
-	
-	public function admin_page_settings() {
-		
-		include_once( $this->info['dirname'] . '/fcn/admin_page_settings.php' );
-		
-	}
-	
-	//-------------------------------------------------------------------------------------------------------------------------------
-	// ADMIN - ACTION CALLBACKS
-	//-------------------------------------------------------------------------------------------------------------------------------
-	
-	// @ admin_menu
-	
-	public function action_admin_menu() {
-		
-		include_once( $this->info['dirname'] . '/fcn/action_admin_menu.php' );
-		
-	}
-	
-	// @ show_user_profile
-	
-	public function action_show_user_profile( $profileuser ) {
-		
-		include_once( $this->info['dirname'] . '/fcn/action_show_user_profile.php' );
-		
-	}
-	
-	//-------------------------------------------------------------------------------------------------------------------------------
-	// ADMIN & FRONT-END
-	//-------------------------------------------------------------------------------------------------------------------------------
-	
-	private function delete_user() {
-		
-		include_once( $this->info['dirname'] . '/fcn/delete_user.php' );
-		
-	}
-	
-	//-------------------------------------------------------------------------------------------------------------------------------
-	// PLUGIN OPERATIONS
-	//-------------------------------------------------------------------------------------------------------------------------------
-	
-	// Activate
-	
-	public function activate( $network_wide = false ) {
-		
-		include_once( $this->info['dirname'] . '/fcn/activate.php' );
-		
-	}
-	
-	// Deactivate
-	
-	public function deactivate( $network_wide = false ) {
-		
-		include_once( $this->info['dirname'] . '/fcn/deactivate.php' );
-		
-	}
-	
-	// New Blog
-	
-	public function new_blog( $blog_id ) {
-		
-		$plugin = basename( $this->info['dirname'] );
-		
-		if ( is_plugin_active_for_network( $plugin . '/' . $plugin . '.php' ) ) {
-			
-			switch_to_blog( $blog_id );
-			
-			$this->activate();
-			
-			restore_current_blog();
-			
-		}
-		
-	}
-	
-	// Upgrade
-	
-	private function upgrade() {
-		
-		include_once( $this->info['dirname'] . '/fcn/upgrade.php' );
-		
-	}
-	
-	// Downgrade notice
-	
-	public function downgrade_notice() {
-		
-		include_once( $this->info['dirname'] . '/fcn/downgrade_notice.php' );
-		
-	}
-	
-	//-------------------------------------------------------------------------------------------------------------------------------
-	// PLUGIN OPTION
-	//-------------------------------------------------------------------------------------------------------------------------------
-	
-	// Default
-	
-	private function default_option() {
-		
-		return array(
-			
-			// Settings
-			
-			'settings' => array(
-				'your_profile_class' => NULL,
-				'your_profile_style' => NULL,
-				'your_profile_anchor' => 'Delete Profile',
-				'your_profile_js_confirm' => 'WARNING!\n\nAll your Posts and Links will be deleted.\n\nAre you sure you want to delete user %username%?',
-				'your_profile_landing_url' => home_url(),
-				'shortcode_class' => NULL,
-				'shortcode_style' => NULL,
-				'shortcode_anchor' => 'Delete Profile',
-				'shortcode_js_confirm' => 'WARNING!\n\nAll your Posts and Links will be deleted.\n\nAre you sure you want to delete user %username%?',
-				'shortcode_landing_url' => home_url(),
-				'ms_delete_from_network' => true,
-				'delete_comments' => false,
-				'email_notification' => false,
-				'uninstall_on_deactivate' => false
-				
-			),
-			
-			// Version
-			
-			'version' => $this->info['version']
-			
-		);
-		
-	}
-	
-	// Fetch
-	
-	private function fetch_option() {
-		
-		return get_option( $this->info['option'], array() );
-		
-	}
-	
-	// Save
-	
-	private function save_option() {
-		
-		return update_option( $this->info['option'], $this->option );
-		
-	}
-	
-	//-------------------------------------------------------------------------------------------------------------------------------
-	// COMPATIBILITY
-	//-------------------------------------------------------------------------------------------------------------------------------
-	
 	// Is compatible
-	
 	private function is_compatible() {
 		
 		if ( version_compare( PHP_VERSION, $this->info['php_version_min'], '<' ) == true ) {
@@ -340,28 +106,211 @@ class plugin_delete_me {
 		
 	}
 	
-	// Is compatible notice
-	
-	public function is_compatible_notice() {
+	// Incompatible notice
+	public function incompatible_notice() {
 		
-		include_once( $this->info['dirname'] . '/fcn/is_compatible_notice.php' );
+		echo '<div class="error">';
+		echo '	<p><strong>Plugin <em style="text-decoration: underline;">' . $this->info['name'] . '</em> incompatible</strong></p>';
+		echo '	<p>Detected &rsaquo; PHP ' . PHP_VERSION . ', WordPress ' . $this->wp_version . ', Multisite=' . ( ( version_compare( $this->wp_version, '3.0', '>=' ) == true && is_multisite() == true ) ? 'Yes' : 'No' ) . '</p>';
+		echo '	<p>Supported &rsaquo; PHP ' . $this->info['php_version_min'] . '+, WordPress ' . $this->info['wp_version_min'] . '+, Multisite=Yes</p>';
+		echo '</div>';
 		
 	}
 	
-	//-------------------------------------------------------------------------------------------------------------------------------
-	// UTILITIES
-	//-------------------------------------------------------------------------------------------------------------------------------
+	// Activate	
+	public function activate( $network_wide = false ) {
+		
+		include_once( $this->info['dirname'] . '/inc/activate.php' );
+		
+	}
 	
-	// Admin message
+	// Deactivate
+	public function deactivate( $network_wide = false ) {
+		
+		include_once( $this->info['dirname'] . '/inc/deactivate.php' );
+		
+	}
+		
+	// Init
+	public function init() {
+		
+		// Admin & Front-End
+		if ( isset( $this->option['version'] ) ) {
+			
+			if ( version_compare( $this->option['version'], $this->info['version'], '<' ) ) {
+				
+				$this->upgrade();
+				
+			} elseif ( version_compare( $this->option['version'], $this->info['version'], '>' ) ) {
+				
+				add_action( 'all_admin_notices', array( &$this, 'downgrade_notice' ) );
+				return; // stop execution
+				
+			}
+			
+		}
+		
+		$this->GET = $this->striptrim_deep( $_GET );
+		if ( isset( $this->GET[$this->info['trigger']] ) ) $this->delete_user();
+		add_action( 'wpmu_new_blog', array( &$this, 'wpmu_new_blog' ) );
+		
+		// Admin only
+		if ( is_admin() ) {
+			
+			$this->POST = $this->striptrim_deep( $_POST );
+			$this->admin_init();
+			return;
+			
+		}
+		
+		// Front-End only
+		add_action( 'wp', array( &$this, 'add_shortcode' ) );
+		
+	}
 	
+	// Upgrade
+	private function upgrade() {
+		
+		include_once( $this->info['dirname'] . '/inc/upgrade.php' );
+		
+	}
+	
+	// Downgrade notice
+	public function downgrade_notice() {
+		
+		echo '<div class="error">';
+		echo '	<p><strong>Plugin <em style="text-decoration: underline;">' . $this->info['name'] . '</em> cannot be downgraded.</strong></p>';
+		echo '	<p>Previously installed version = ' . $this->option['version'] . '</p>';
+		echo '	<p>Currently installed version = ' . $this->info['version'] . '</p>';
+		echo '	<p><a href="' . esc_url( $this->info['uri'] ) . '">Visit plugin site</a> for the latest version or deactivate this plugin on the WordPress <code>Plugins</code> panel.</p>';
+		echo '</div>';
+		
+	}
+	
+	// Delete user
+	private function delete_user() {
+		
+		include_once( $this->info['dirname'] . '/inc/delete_user.php' );
+		
+	}
+		
+	// WPMU New blog
+	public function wpmu_new_blog( $blog_id ) {
+		
+		$plugin = basename( $this->info['dirname'] );
+		
+		if ( is_plugin_active_for_network( $plugin . '/' . $plugin . '.php' ) ) {
+			
+			switch_to_blog( $blog_id );
+			$this->activate();
+			restore_current_blog();
+			
+		}
+		
+	}
+	
+	// Admin init
+	private function admin_init() {
+		
+		add_action( 'admin_menu', array( &$this, 'add_submenu_page' ) );
+		add_action( 'show_user_profile', array( &$this, 'your_profile' ) );
+		
+	}
+	
+	// Add submenu page
+	public function add_submenu_page() {
+		
+		add_submenu_page(
+			'options-general.php',						// parent menu slug or wordpress filename
+			$this->info['name'] . ' Settings',			// page <title>
+			$this->info['name'],						// submenu title
+			'delete_users',								// capability
+			$this->info['slug_prefix'] . '_settings',	// unique page slug (i.e. ?page=slug)
+			array( &$this, 'admin_page_settings' )		// function to be called to output the page
+		);
+		
+	}
+	
+	// Admin page settings
+	public function admin_page_settings() {
+		
+		include_once( $this->info['dirname'] . '/inc/admin_page_settings.php' );
+		
+	}
+	
+	// Your profile
+	public function your_profile( $profileuser ) {
+		
+		include_once( $this->info['dirname'] . '/inc/your_profile.php' );
+		
+	}
+	
+	// Add shortcode
+	public function add_shortcode() {
+		
+		add_shortcode( $this->info['shortcode'], array( &$this, 'shortcode' ) );
+		
+	}
+	
+	// Shortcode
+	public function shortcode( $atts = array(), $content = '', $code = '' ) {
+		
+		include_once( $this->info['dirname'] . '/inc/shortcode.php' );
+		return ( isset( $longcode ) ) ? $longcode : $content;
+		
+	}
+	
+	// Default option
+	private function default_option() {
+		
+		return array(
+			'settings' => array(
+				'your_profile_class' => NULL,
+				'your_profile_style' => NULL,
+				'your_profile_anchor' => 'Delete Profile',
+				'your_profile_js_confirm' => 'WARNING!\n\nAll your Posts and Links will be deleted.\n\nAre you sure you want to delete user %username%?',
+				'your_profile_landing_url' => home_url(),
+				'your_profile_enabled' => true,
+				'shortcode_class' => NULL,
+				'shortcode_style' => NULL,
+				'shortcode_anchor' => 'Delete Profile',
+				'shortcode_js_confirm' => 'WARNING!\n\nAll your Posts and Links will be deleted.\n\nAre you sure you want to delete user %username%?',
+				'shortcode_landing_url' => home_url(),
+				'ms_delete_from_network' => true,
+				'delete_comments' => false,
+				'email_notification' => false,
+				'uninstall_on_deactivate' => false
+			),
+			'version' => $this->info['version']
+		);
+		
+	}
+	
+	// Fetch option	
+	private function fetch_option() {
+		
+		return get_option( $this->info['option'], array() );
+		
+	}
+	
+	// Save option	
+	private function save_option() {
+		
+		return update_option( $this->info['option'], $this->option );
+		
+	}
+	
+	// Admin message	
 	public function admin_message() {
 		
-		include_once( $this->info['dirname'] . '/fcn/admin_message.php' );
+		if ( is_admin() == false ) return; // stop execution		
+		echo '<div class="' . $this->admin_message_class . '">';
+		echo '	<p>' . $this->admin_message_content . '</p>';
+		echo '</div>';
 		
 	}
 	
-	// Sync arrays
-	
+	// Sync arrays	
 	private function sync_arrays( $sync_to, $sync_from ) {
 		
 		foreach ( $sync_from as $key => $value ) {
@@ -386,8 +335,7 @@ class plugin_delete_me {
 		
 	}
 	
-	// Striptrim deep
-	
+	// Striptrim deep	
 	private function striptrim_deep( $value ) {
 		
 		if ( is_array( $value ) ) {
@@ -398,9 +346,9 @@ class plugin_delete_me {
 			
 			$vars = get_object_vars( $value );
 			
-			foreach ($vars as $key => $data) {
+			foreach ( $vars as $key => $data ) {
 				
-				$value->{$key} = striptrim_deep( $data );
+				$value->{$key} = $this->striptrim_deep( $data );
 				
 			}
 			
@@ -417,7 +365,6 @@ class plugin_delete_me {
 }
 
 // Instaniate plugin class
-
 new plugin_delete_me();
 
 endif; // class_exists

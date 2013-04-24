@@ -5,7 +5,7 @@ Tags: delete, user delete, delete profile, user management, multisite
 Requires: WordPress 3.5.1+, PHP 5.2.4+
 Requires at least: 3.5.1
 Tested up to: 3.5.1
-Stable tag: 1.3
+Stable tag: 1.4
 License: GPL2 http://www.gnu.org/licenses/gpl-2.0.html
 
 Allow specific WordPress roles to delete themselves.
@@ -16,7 +16,7 @@ Allow specific WordPress roles to delete themselves on the `Users -> Your Profil
 on any Post or Page using the Shortcode `[plugin_delete_me /]`. Settings for this plugin are found on the `Settings -> Delete Me` subpanel.
 Multisite and Network Activation supported.
 
-How it works:
+**How it works:**
 
 * A user clicks the delete link, which by default says `Delete Profile`, but can be changed.
 
@@ -26,7 +26,7 @@ How it works:
 
 * Deleted user is redirected to the landing page URL, which by default is your homepage, but can be changed.
 
-Settings available:
+**Settings available:**
 
 * Select specific WordPress roles (e.g. Subscriber) you want to allow to delete themselves using Delete Me.
 
@@ -37,6 +37,8 @@ Settings available:
 * Javascript confirm text.
 
 * Landing page URL.
+
+* Enable or disable delete link on the `Users -> Your Profile` subpanel.
 
 * Multisite: Delete user from Network if they no longer belong to any other Network Sites after deletion from current Site.
 
@@ -92,6 +94,13 @@ Yes. The `Settings -> Delete Me` subpanel has a setting called "E-mail Notificat
 
 == Changelog ==
 
+= 1.4 =
+
+* Added setting to enable or disable the delete link on the `Users -> Your Profile` subpanel.
+* Added an uninstall.php file. This enables removal of the plugin capabilities and settings when you "Delete" the plugin from the `Plugins` panel in WordPress.
+* Fixed invalid `$wpdb->prepare()` calls for Multisite installations that are no longer valid as of WordPress 3.5
+* Consolidated scripts to reduce the number of files used and the total plugin filesize.
+
 = 1.3 =
 
 * Added setting to customize Javascript confirm text.
@@ -114,6 +123,10 @@ Yes. The `Settings -> Delete Me` subpanel has a setting called "E-mail Notificat
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.4 =
+
+This version added a setting to enable or disable the delete link on the `Users -> Your Profile` subpanel. A few noncritical stability improvements were also added. See Changelog for details.
 
 = 1.3 =
 

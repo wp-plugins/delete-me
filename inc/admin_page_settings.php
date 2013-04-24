@@ -1,23 +1,18 @@
 <?php
 // File called by class?
-
 if ( isset( $this ) == false || get_class( $this ) != 'plugin_delete_me' ) exit;
 
 // Does user have the capability for this menu page?
-
 if ( current_user_can( 'delete_users' ) == false ) return; // stop executing file
 
 // Form nonce
-
 $form_nonce_action = $this->GET['page'] . '_nonce_action';
 $form_nonce_name = $this->GET['page'] . '_nonce_name';
 
 // Save changes
-
 if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$form_nonce_name], $form_nonce_action ) == true ) {
 	
-	// Roles
-	
+	// Roles	
 	settype( $this->POST['roles'], 'array' );
 	
 	foreach ( $this->wp_roles->role_objects as $role ) {
@@ -39,21 +34,21 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 	
 	$default_option = $this->default_option();
 	
-	// Users -> Your Profile
-	
+	// Users -> Your Profile	
 	settype( $this->POST['your_profile_class'], 'string' );
 	settype( $this->POST['your_profile_style'], 'string' );
 	settype( $this->POST['your_profile_anchor'], 'string' );
 	settype( $this->POST['your_profile_js_confirm'], 'string' );
 	settype( $this->POST['your_profile_landing_url'], 'string' );
+	settype( $this->POST['your_profile_enabled'], 'bool' );
 	$this->option['settings']['your_profile_class'] = ( empty( $this->POST['your_profile_class'] ) ) ? NULL : $this->POST['your_profile_class'];
 	$this->option['settings']['your_profile_style'] = ( empty( $this->POST['your_profile_style'] ) ) ? NULL : $this->POST['your_profile_style'];
 	$this->option['settings']['your_profile_anchor'] = ( empty( $this->POST['your_profile_anchor'] ) ) ? $default_option['settings']['your_profile_anchor'] : $this->POST['your_profile_anchor'];
 	$this->option['settings']['your_profile_js_confirm'] = ( empty( $this->POST['your_profile_js_confirm'] ) ) ? $default_option['settings']['your_profile_js_confirm'] : $this->POST['your_profile_js_confirm'];
 	$this->option['settings']['your_profile_landing_url'] = ( empty( $this->POST['your_profile_landing_url'] ) ) ? $default_option['settings']['your_profile_landing_url'] : $this->POST['your_profile_landing_url'];
+	$this->option['settings']['your_profile_enabled'] = $this->POST['your_profile_enabled'];
 	
-	// Shortcode
-	
+	// Shortcode	
 	settype( $this->POST['shortcode_class'], 'string' );
 	settype( $this->POST['shortcode_style'], 'string' );
 	settype( $this->POST['shortcode_anchor'], 'string' );
@@ -65,32 +60,26 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 	$this->option['settings']['shortcode_js_confirm'] = ( empty( $this->POST['shortcode_js_confirm'] ) ) ? $default_option['settings']['shortcode_js_confirm'] : $this->POST['shortcode_js_confirm'];
 	$this->option['settings']['shortcode_landing_url'] = ( empty( $this->POST['shortcode_landing_url'] ) ) ? $default_option['settings']['shortcode_landing_url'] : $this->POST['shortcode_landing_url'];
 	
-	// Multisite: Delete from Network
-	
+	// Multisite: Delete from Network	
 	settype( $this->POST['ms_delete_from_network'], 'bool' );
 	$this->option['settings']['ms_delete_from_network'] = $this->POST['ms_delete_from_network'];
 	
-	// Delete Comments
-	
+	// Delete Comments	
 	settype( $this->POST['delete_comments'], 'bool' );
 	$this->option['settings']['delete_comments'] = $this->POST['delete_comments'];
 	
-	// E-mail notification
-	
+	// E-mail notification	
 	settype( $this->POST['email_notification'], 'bool' );
 	$this->option['settings']['email_notification'] = $this->POST['email_notification'];
 	
-	// Uninstall on deactivate
-	
+	// Uninstall on deactivate	
 	settype( $this->POST['uninstall_on_deactivate'], 'bool' );
 	$this->option['settings']['uninstall_on_deactivate'] = $this->POST['uninstall_on_deactivate'];
 	
-	// Save Option
-	
+	// Save Option	
 	$this->save_option();
 	
-	// Print admin message
-	
+	// Print admin message	
 	$this->admin_message_class = 'updated';
 	$this->admin_message_content = 'Changes Saved';
 	$this->admin_message();
@@ -162,6 +151,12 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 					<input type="text" id="your_profile_landing_url" name="your_profile_landing_url" class="code large-text" value="<?php echo esc_url( $this->option['settings']['your_profile_landing_url'] ); ?>" />
 				</td>
 			</tr>
+			<tr>
+				<th scope="row"><label for="your_profile_enabled">Enabled</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Check box to show delete link, uncheck box to hide the delete link.">[?]</a></th>
+				<td>
+					<input type="checkbox" id="your_profile_enabled" name="your_profile_enabled" value="1"<?php echo ( $this->option['settings']['your_profile_enabled'] == true ) ? ' checked="checked"' : ''; ?> />
+				</td>
+			</tr>
 		</table>
 		<h3>Shortcode</h3>
 		<table class="form-table">
@@ -219,7 +214,7 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="email_notification">E-mail Notification</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Send a text email with deletion details each time a user deletes themselves using <?php echo $this->info['name']; ?>. This will go to the site administrator email ( i.e. <?php echo get_option( 'admin_email' ); ?> ), the same email address used for new user notification.">[?]</a></th>
+				<th scope="row"><label for="email_notification">E-mail Notification</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Send a text email with deletion details each time a user deletes themselves using <?php echo $this->info['name']; ?>. This will go to the site administrator email (i.e. <?php echo get_option( 'admin_email' ); ?>), the same email address used for new user notification.">[?]</a></th>
 				<td>
 					<input type="checkbox" id="email_notification" name="email_notification" value="1"<?php echo ( $this->option['settings']['email_notification'] == true ) ? ' checked="checked"' : ''; ?> />
 				</td>
