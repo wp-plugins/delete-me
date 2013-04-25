@@ -81,7 +81,7 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 	
 	// Print admin message	
 	$this->admin_message_class = 'updated';
-	$this->admin_message_content = 'Changes Saved';
+	$this->admin_message_content = 'Settings saved';
 	$this->admin_message();
 	
 }
@@ -127,7 +127,7 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 		<h3>Users &rarr; Your Profile</h3>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="your_profile_anchor">Link</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Class &amp; Style are optional. The last box is the clickable content of the link in raw HTML ( e.g. Delete User --- or --- &lt;img alt=&quot;&quot; src=&quot;http://www.example.com/image.png&quot; width=&quot;100&quot; height=&quot;20&quot; /&gt; )">[?]</a></th>
+				<th scope="row"><label for="your_profile_anchor">Link</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Class &amp; Style are optional. The last box is the clickable content of the link in raw HTML (e.g. Delete Profile &mdash; or &mdash; &lt;img alt=&quot;&quot; src=&quot;http://www.example.com/image.png&quot; width=&quot;100&quot; height=&quot;20&quot; /&gt;)">[?]</a></th>
 				<td>
 					<code>
 						&lt;a
@@ -161,7 +161,7 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 		<h3>Shortcode</h3>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="shortcode_anchor">Link</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Class &amp; Style are optional. The last box is the clickable content of the link in raw HTML ( e.g. Delete User --- or --- &lt;img alt=&quot;&quot; src=&quot;http://www.example.com/image.png&quot; width=&quot;100&quot; height=&quot;20&quot; /&gt; )">[?]</a></th>
+				<th scope="row"><label for="shortcode_anchor">Link</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Class &amp; Style are optional. The last box is the clickable content of the link in raw HTML (e.g. Delete Profile &mdash; or &mdash; &lt;img alt=&quot;&quot; src=&quot;http://www.example.com/image.png&quot; width=&quot;100&quot; height=&quot;20&quot; /&gt;)">[?]</a></th>
 				<td>
 					<code>
 						&lt;a
@@ -186,13 +186,16 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 				</td>
 			</tr>
 			<tr>
-				<th scope="row">Shortcode <a href="#" onclick="return false;" style="text-decoration: none;" title="Copy and paste this Shortcode into any Post or Page to show the delete link configured above to users with roles as configured above.">[?]</a></th>
+				<th scope="row">Usage <a href="#" onclick="return false;" style="text-decoration: none;" title="Text inside the Shortcode open and close tags is only served to those who cannot delete themselves, everyone else will be shown the delete link configured above.">[?]</a></th>
 				<td>
-					<code>[<?php echo $this->info['shortcode']; ?> /]</code>
-					<br />
-					or
-					<br />
-					<code>[<?php echo $this->info['shortcode']; ?>]</code><span class="description">Instead of a delete link, content between the Shortcode open and close tags is shown to anyone unable to delete themselves.</span><code>[/<?php echo $this->info['shortcode']; ?>]</code>
+					<p>
+						<code>[<?php echo $this->info['shortcode']; ?> /]</code><br />
+						<code>[<?php echo $this->info['shortcode']; ?>]Text inside Shortcode tags[/<?php echo $this->info['shortcode']; ?>]</code>
+					</p>
+					<p>
+						<code>&lt;?php echo do_shortcode( '[<?php echo $this->info['shortcode']; ?> /]' ); ?&gt;</code><br />
+						<code>&lt;?php echo do_shortcode( '[<?php echo $this->info['shortcode']; ?>]Text inside Shortcode tags[/<?php echo $this->info['shortcode']; ?>]' ); ?&gt;</code>
+					</p>
 				</td>
 			</tr>
 		</table>
@@ -208,7 +211,7 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 		<h3>Miscellaneous</h3>
 		<table class="form-table">
 			<tr>
-				<th scope="row"><label for="delete_comments">Delete Comments</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Delete all comments by the user when they delete themselves.  MULTISITE:  Only comments on the current Site are deleted, other Network Sites remain unaffected.">[?]</a></th>
+				<th scope="row"><label for="delete_comments">Delete Comments</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Delete all comments by the user when they delete themselves. IF MULTISITE only comments on the current Site are deleted, other Network Sites remain unaffected.">[?]</a></th>
 				<td>
 					<input type="checkbox" id="delete_comments" name="delete_comments" value="1"<?php echo ( $this->option['settings']['delete_comments'] == true ) ? ' checked="checked"' : ''; ?> />
 				</td>
