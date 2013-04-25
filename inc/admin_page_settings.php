@@ -152,7 +152,7 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="your_profile_enabled">Enabled</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Check box to show delete link, uncheck box to hide the delete link.">[?]</a></th>
+				<th scope="row"><label for="your_profile_enabled">Enabled</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Check box to show delete link, uncheck box to hide delete link.">[?]</a></th>
 				<td>
 					<input type="checkbox" id="your_profile_enabled" name="your_profile_enabled" value="1"<?php echo ( $this->option['settings']['your_profile_enabled'] == true ) ? ' checked="checked"' : ''; ?> />
 				</td>
