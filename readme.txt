@@ -98,7 +98,7 @@ Yes. The `Settings -> Delete Me` subpanel has a setting called "E-mail Notificat
 
 * Added setting to enable or disable the delete link on the `Users -> Your Profile` subpanel.
 * Added an uninstall.php file. This enables removal of the plugin capabilities and settings when you "Delete" the plugin from the `Plugins` panel in WordPress.
-* Fixed invalid `$wpdb->prepare()` calls for Multisite installations that are no longer valid as of WordPress 3.5
+* Removed single argument `$wpdb->prepare()` calls on Multisite installations that are no longer valid as of WordPress 3.5
 * Consolidated scripts to reduce the number of files used and the total plugin filesize.
 
 = 1.3 =
