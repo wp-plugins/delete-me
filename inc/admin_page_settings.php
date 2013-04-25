@@ -81,7 +81,7 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 	
 	// Print admin message	
 	$this->admin_message_class = 'updated';
-	$this->admin_message_content = 'Settings saved';
+	$this->admin_message_content = '<strong>Settings saved.</strong>';
 	$this->admin_message();
 	
 }
