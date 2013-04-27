@@ -63,8 +63,7 @@ class plugin_delete_me {
 			'uri' => 'http://wordpress.org/extend/plugins/delete-me/',
 			'donate_link' => 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L5VY6QDSAAZUL',
 			'version' => '1.4',
-			'php_version_min' => '5.2.4',
-			'wp_version_min' => '3.5.1',
+			'wp_version_min' => '3.4',
 			'option' => 'plugin_delete_me',
 			'shortcode' => 'plugin_delete_me',
 			'slug_prefix' => 'plugin_delete_me',
@@ -74,10 +73,10 @@ class plugin_delete_me {
 			'dirname' => dirname( __FILE__ )
 		);
 		
-		if ( $this->is_compatible() == false ) {				
+		if ( $this->is_compatible() == false ) {
 			
 			add_action( ( ( version_compare( $this->wp_version, '3.1', '>=' ) == true ) ? 'all_admin_notices' : 'admin_notices' ), array( &$this, 'incompatible_notice' ) );
-			return; // stop object construction
+			return; // stop execution
 			
 		}
 		
@@ -91,19 +90,7 @@ class plugin_delete_me {
 	// Is compatible
 	private function is_compatible() {
 		
-		if ( version_compare( PHP_VERSION, $this->info['php_version_min'], '<' ) == true ) {
-			
-			return false;
-			
-		} elseif ( version_compare( $this->wp_version, $this->info['wp_version_min'], '<' ) == true ) {
-			
-			return false;
-			
-		} else {
-			
-			return true;
-			
-		}
+		return version_compare( $this->wp_version, $this->info['wp_version_min'], '<' ) ? false : true;
 		
 	}
 	
@@ -111,9 +98,7 @@ class plugin_delete_me {
 	public function incompatible_notice() {
 		
 		echo '<div class="error">';
-		echo '	<p><strong>Plugin <em style="text-decoration: underline;">' . $this->info['name'] . '</em> incompatible</strong></p>';
-		echo '	<p>Detected &rsaquo; PHP ' . PHP_VERSION . ', WordPress ' . $this->wp_version . ', Multisite=' . ( ( version_compare( $this->wp_version, '3.0', '>=' ) == true && is_multisite() == true ) ? 'Yes' : 'No' ) . '</p>';
-		echo '	<p>Supported &rsaquo; PHP ' . $this->info['php_version_min'] . '+, WordPress ' . $this->info['wp_version_min'] . '+, Multisite=Yes</p>';
+		echo '	<p><strong>Plugin incompatible, <em>' . $this->info['name'] . ' (version ' . $this->info['version'] . ')</em> requires WordPress ' . $this->info['wp_version_min'] . ' or higher.</strong></p>';
 		echo '</div>';
 		
 	}
@@ -160,7 +145,7 @@ class plugin_delete_me {
 			
 			$this->POST = $this->striptrim_deep( $_POST );
 			$this->admin_init();
-			return;
+			return; // stop execution
 			
 		}
 		
@@ -180,10 +165,7 @@ class plugin_delete_me {
 	public function downgrade_notice() {
 		
 		echo '<div class="error">';
-		echo '	<p><strong>Plugin <em style="text-decoration: underline;">' . $this->info['name'] . '</em> cannot be downgraded.</strong></p>';
-		echo '	<p>Previously installed version = ' . $this->option['version'] . '</p>';
-		echo '	<p>Currently installed version = ' . $this->info['version'] . '</p>';
-		echo '	<p><a href="' . esc_url( $this->info['uri'] ) . '">Visit plugin site</a> for the latest version or deactivate this plugin on the WordPress <code>Plugins</code> panel.</p>';
+		echo '	<p><strong>Plugin <em>' . $this->info['name'] . '</em> cannot be downgraded. <a href="' . esc_url( $this->info['uri'] ) . '">Visit plugin site</a> for the latest version.</strong></p>';
 		echo '</div>';
 		
 	}
