@@ -2,19 +2,17 @@
 Contributors: cmc3215
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L5VY6QDSAAZUL
 Tags: delete, user delete, delete profile, delete own account, unregister, user unregister, unsubscribe, user unsubscribe, user management, multisite
-Requires: WordPress 3.5.1+, PHP 5.2.4+
 Requires at least: 3.5.1
 Tested up to: 3.5.1
 Stable tag: 1.4
 License: GPL2 http://www.gnu.org/licenses/gpl-2.0.html
 
-Allow specific WordPress roles to delete themselves.
+Allow users with specific WordPress roles to delete themselves from the `Users -> Your Profile` subpanel or anywhere Shortcodes can be used.
 
 == Description ==
 
-Allow specific WordPress roles to delete themselves on the `Users -> Your Profile` subpanel or
-on any Post or Page using the Shortcode `[plugin_delete_me /]`. Settings for this plugin are found on the `Settings -> Delete Me` subpanel.
-Multisite and Network Activation supported.
+Allow users with specific WordPress roles to delete themselves from the `Users -> Your Profile` subpanel or anywhere Shortcodes can be used using the Shortcode `[plugin_delete_me /]`.
+Settings for this plugin are found on the `Settings -> Delete Me` subpanel. Multisite and Network Activation supported.
 
 **How it works:**
 
@@ -54,7 +52,7 @@ Multisite and Network Activation supported.
 
 3. Go to the `Settings -> Delete Me` subpanel. Select the WordPress roles you want to allow to delete themselves using Delete Me and save changes.
 
-4. The delete link will be placed automatically on the `Users -> Your Profile` subpanel for roles you allow, but if you have a Post or Page you'd like the delete link to appear on just copy and paste the Shortcode `[plugin_delete_me /]` there. A custom PHP template can use the Shortcode this way `<?php echo do_shortcode('[plugin_delete_me /]'); ?>`
+4. The delete link will be placed automatically on the `Users -> Your Profile` subpanel for roles you allow, but if you have a Post or Page you'd like the delete link to appear on just copy and paste the Shortcode `[plugin_delete_me /]` there. A custom PHP template can use the Shortcode like so `<?php echo do_shortcode( '[plugin_delete_me /]' ); ?>`
 
 == Frequently Asked Questions ==
 
@@ -68,7 +66,7 @@ Yes, Network Activation and single Site activation are both supported. Users and
 
 = Is it possible for a user to delete anyone but themselves? =
 
-Absolutely not, the user deleted is only the currently logged in user, period.
+No, the user deleted is the currently logged in user, period.
 
 = What does the Shortcode display when the user is not logged in or their role is not allowed to delete themselves? =
 
@@ -96,17 +94,22 @@ Yes. The `Settings -> Delete Me` subpanel has a setting called "E-mail Notificat
 
 = 1.4 =
 
+* Release date: 04/24/2013
 * Added setting to enable or disable the delete link on the `Users -> Your Profile` subpanel.
 * Added an uninstall.php file. This enables removal of the plugin capabilities and settings when you "Delete" the plugin from the `Plugins` panel in WordPress.
-* Removed single argument `$wpdb->prepare()` calls on Multisite installations that are no longer valid as of WordPress 3.5
+* Fixed possible PHP Warning: missing argument 2 `$wpdb->prepare()` on Multisite installations using WordPress 3.5+
+* Fixed possible PHP Fatal error: undefined function `is_plugin_active_for_network()` on Multisite installations when adding a new Site from outside the WordPress Admin pages.
 * Consolidated scripts to reduce the number of files used and the total plugin filesize.
 
 = 1.3 =
 
+* Release date: 04/23/2013
 * Added setting to customize Javascript confirm text.
 
 = 1.2 =
 
+* Release date: 02/07/2013
+* WordPress 3.5.1 now required.
 * Added Multisite and Network Activation support.
 * Added setting for Multisite to delete user from Network if user no longer belongs to any Network Sites.
 * Added setting to delete comments.
@@ -115,18 +118,20 @@ Yes. The `Settings -> Delete Me` subpanel has a setting called "E-mail Notificat
 
 = 1.1 =
 
+* Release date: 04/11/2011
 * Added setting for detailed e-mail notification when user deletes themselves.
 * Fixed undefined function errors for wp_delete_post and wp_delete_link when user has Posts or Links.
 
 = 1.0 =
 
+* Release date: 04/09/2011
 * Initial release.
 
 == Upgrade Notice ==
 
 = 1.4 =
 
-This version added a setting to enable or disable the delete link on the `Users -> Your Profile` subpanel. A few noncritical stability improvements were also added. See Changelog for details.
+This version added a setting to enable or disable the delete link on the `Users -> Your Profile` subpanel. Noncritical stability improvements were also added. See Changelog for details.
 
 = 1.3 =
 

@@ -2,7 +2,7 @@
 /*
 Plugin Name: Delete Me
 Plugin URI: http://wordpress.org/extend/plugins/delete-me/
-Description: Allow specific WordPress roles to delete themselves on the WordPress <code>Users &rarr; Your Profile</code> subpanel or on any Post or Page using the Shortcode <code>[plugin_delete_me /]</code>. Settings for this plugin are found on the <code>Settings &rarr; Delete Me</code> subpanel. Multisite and Network Activation supported.
+Description: Allow users with specific WordPress roles to delete themselves from the <code>Users &rarr; Your Profile</code> subpanel or anywhere Shortcodes can be used using the Shortcode <code>[plugin_delete_me /]</code>. Settings for this plugin are found on the <code>Settings &rarr; Delete Me</code> subpanel. Multisite and Network Activation supported.
 Version: 1.4
 Author: Clinton Caldwell
 Author URI: http://wordpress.org/
@@ -31,7 +31,7 @@ if ( realpath( __FILE__ ) === realpath( $_SERVER['SCRIPT_FILENAME'] ) ) exit; //
 if ( class_exists( 'plugin_delete_me' ) == false ) :
 
 class plugin_delete_me {
-		
+	
 	private $wp_roles;
 	private $wp_version;
 	private $wpdb;
@@ -61,6 +61,7 @@ class plugin_delete_me {
 		$this->info = array(
 			'name' => 'Delete Me',
 			'uri' => 'http://wordpress.org/extend/plugins/delete-me/',
+			'donate_link' => 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L5VY6QDSAAZUL',
 			'version' => '1.4',
 			'php_version_min' => '5.2.4',
 			'wp_version_min' => '3.5.1',
@@ -197,9 +198,9 @@ class plugin_delete_me {
 	// WPMU New blog
 	public function wpmu_new_blog( $blog_id ) {
 		
-		$plugin = basename( $this->info['dirname'] );
+		if ( ! function_exists( 'is_plugin_active_for_network' ) ) include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		
-		if ( is_plugin_active_for_network( $plugin . '/' . $plugin . '.php' ) ) {
+		if ( is_plugin_active_for_network( plugin_basename( __FILE__ ) ) ) {
 			
 			switch_to_blog( $blog_id );
 			$this->activate();
@@ -214,6 +215,15 @@ class plugin_delete_me {
 		
 		add_action( 'admin_menu', array( &$this, 'add_submenu_page' ) );
 		add_action( 'show_user_profile', array( &$this, 'your_profile' ) );
+		add_filter( 'plugin_row_meta', array( &$this, 'plugin_row_meta' ), 10, 2 );
+		
+	}
+	
+	// Plugin row meta
+	public function plugin_row_meta( $plugin_meta, $plugin_file ) {
+		
+        if ( $plugin_file == plugin_basename( __FILE__ ) ) $plugin_meta[] = '<a href="' . esc_url( $this->info['donate_link'] ) . '" title="Donate to this plugin">Donate to this plugin</a>';
+        return $plugin_meta;
 		
 	}
 	
