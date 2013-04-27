@@ -2,7 +2,7 @@
 Contributors: cmc3215
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L5VY6QDSAAZUL
 Tags: delete, user delete, delete profile, delete own account, unregister, user unregister, unsubscribe, user unsubscribe, user management, multisite
-Requires at least: 3.5.1
+Requires at least: 3.4
 Tested up to: 3.5.1
 Stable tag: 1.4
 License: GPL2 http://www.gnu.org/licenses/gpl-2.0.html
@@ -109,7 +109,7 @@ Yes. The `Settings -> Delete Me` subpanel has a setting called "E-mail Notificat
 = 1.2 =
 
 * Release date: 02/07/2013
-* WordPress 3.5.1 now required.
+* WordPress 3.4 now required.
 * Added Multisite and Network Activation support.
 * Added setting for Multisite to delete user from Network if user no longer belongs to any Network Sites.
 * Added setting to delete comments.
