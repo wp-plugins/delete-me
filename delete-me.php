@@ -204,8 +204,8 @@ class plugin_delete_me {
 	// Plugin row meta
 	public function plugin_row_meta( $plugin_meta, $plugin_file ) {
 		
-        if ( $plugin_file == plugin_basename( __FILE__ ) ) $plugin_meta[] = '<a href="' . esc_url( $this->info['donate_link'] ) . '" title="Donate to this plugin">Donate to this plugin</a>';
-        return $plugin_meta;
+		if ( $plugin_file == plugin_basename( __FILE__ ) ) $plugin_meta[] = '<a href="' . esc_url( $this->info['donate_link'] ) . '" title="Donate to this plugin">Donate to this plugin</a>';
+		return $plugin_meta;
 		
 	}
 	
@@ -307,9 +307,9 @@ class plugin_delete_me {
 		
 		foreach ( $sync_from as $key => $value ) {
 			
-			if ( array_key_exists( $key, $sync_to ) ) {
+			if ( array_key_exists( $key, $sync_to ) ) :
 				
-				if ( is_array( $sync_to[$key] ) && is_array( $value ) ) {
+				if ( is_array( $sync_to[$key] ) && is_array( $sync_from[$key] ) ) {
 					
 					$sync_to[$key] = $this->sync_arrays( $sync_to[$key], $sync_from[$key] );
 					
@@ -319,7 +319,7 @@ class plugin_delete_me {
 					
 				}
 				
-			}
+			endif;
 			
 		}
 		
@@ -336,13 +336,8 @@ class plugin_delete_me {
 			
 		} elseif ( is_object( $value ) ) {
 			
-			$vars = get_object_vars( $value );
-			
-			foreach ( $vars as $key => $data ) {
-				
-				$value->{$key} = $this->striptrim_deep( $data );
-				
-			}
+			$vars = get_object_vars( $value );			
+			foreach ( $vars as $key => $data ) $value->{$key} = $this->striptrim_deep( $data );
 			
 		} else {
 			
