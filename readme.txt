@@ -3,7 +3,7 @@ Contributors: cmc3215
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L5VY6QDSAAZUL
 Tags: delete, user delete, delete profile, delete own account, unregister, user unregister, unsubscribe, user unsubscribe, user management, multisite
 Requires at least: 3.4
-Tested up to: 3.8
+Tested up to: 3.9
 Stable tag: 1.4
 License: GPL2 http://www.gnu.org/licenses/gpl-2.0.html
 
