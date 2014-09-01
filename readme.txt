@@ -64,6 +64,10 @@ Most Post types and Comments are moved to Trash. Links are always deleted perman
 
 Yes, Network Activation and single Site activation are both supported. Users and their content will only be deleted from the Site they delete themselves from, other Network Sites will be unaffected.
 
+= When using Multisite is a user deleted from the Network or only the Site deletion originated from? =
+
+If the user is registered to more than one Site on the Network they're only deleted from the single Site, their user remains on the Network registered to any of their remaining Sites. However, if the option "Delete From Network" is checked and they belong to only one Site then their user will be deleted from the Network because they no longer belong to any Network Site.
+
 = Is it possible for a user to delete anyone but themselves? =
 
 No, the user deleted is the currently logged in user, period.
