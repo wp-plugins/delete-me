@@ -1,10 +1,10 @@
 === Delete Me ===
 Contributors: cmc3215
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L5VY6QDSAAZUL
-Tags: delete, user delete, delete profile, delete own account, unregister, user unregister, unsubscribe, user unsubscribe, user management, multisite
+Tags: delete, user delete, delete profile, delete account, delete own account, unregister, user unregister, unsubscribe, user unsubscribe, user management, multisite
 Requires at least: 3.4
 Tested up to: 4.0
-Stable tag: 1.4
+Stable tag: 1.5
 License: GPL2 http://www.gnu.org/licenses/gpl-2.0.html
 
 Allow users with specific WordPress roles to delete themselves from the `Users -> Your Profile` subpanel or anywhere Shortcodes can be used.
@@ -16,13 +16,13 @@ Settings for this plugin are found on the `Settings -> Delete Me` subpanel. Mult
 
 **How it works:**
 
-* A user clicks the delete link, which by default says `Delete Profile`, but can be changed.
+* A user clicks the delete link, which defaults to `Delete Account`, but can be changed.
 
 * User is asked to confirm they want to delete themselves, [OK] or [Cancel].
 
 * If [OK] the user is deleted along with all their Posts, Links, and (optionally) Comments.
 
-* Deleted user is redirected to the landing page URL, which by default is your homepage, but can be changed.
+* Deleted user is (optionally) redirected to a landing page URL, which defaults to your homepage, but can be changed or left blank.
 
 **Settings available:**
 
@@ -96,6 +96,17 @@ Yes. The `Settings -> Delete Me` subpanel has a setting called "E-mail Notificat
 
 == Changelog ==
 
+= 1.5 =
+
+* Release date: 10/18/2014
+* Your Profile and Shortcode "Landing URL" may now be left blank to remain at the same URL after deletion.
+* Removed setting and code for "Uninstall on Deactivate". You can still wipe all traces of the plugin from the Plugins panel by deactivating and clicking Delete.
+* Added button on settings page, "Restore Default Settings".
+* Shortcode deletion link no longer relies on the get_permalink() function. This makes the shortcode's placement more flexible and the link location more accurate.
+* wp_logout() function is now run after user deletion to cleanup session and auth cookies.
+* Delete link default updated, old = "Delete Profile", new = "Delete Account".
+* Javascript confirm text default updated, the line about Post and Links was removed.
+
 = 1.4 =
 
 * Release date: 04/24/2013
@@ -118,7 +129,6 @@ Yes. The `Settings -> Delete Me` subpanel has a setting called "E-mail Notificat
 * Added setting for Multisite to delete user from Network if user no longer belongs to any Network Sites.
 * Added setting to delete comments.
 * Edited e-mail notification to list the number of comments deleted.
-* Edited Javascript delete warning to include "Comments" in the warning if the setting "Delete Comments" is checked.
 
 = 1.1 =
 
@@ -133,21 +143,25 @@ Yes. The `Settings -> Delete Me` subpanel has a setting called "E-mail Notificat
 
 == Upgrade Notice ==
 
+= 1.5 =
+
+Recommended - Minor stability fixes and improvements. See Changelog - https://wordpress.org/plugins/delete-me/changelog/
+
 = 1.4 =
 
-This version added a setting to enable or disable the delete link on the `Users -> Your Profile` subpanel. Noncritical stability improvements were also added. See Changelog for details.
+Critical - Major stability fixes and minor improvements. See Changelog - https://wordpress.org/plugins/delete-me/changelog/
 
 = 1.3 =
 
-This version added a setting to customize the text on the Javascript confirm dialog box.
+Recommended - Added a setting to customize the text of the Javascript confirm dialog box.
 
 = 1.2 =
 
-This version supports Multisite and Network Activation. A setting to delete comments was also added. See Changelog for details.
+Recommended - Major improvements added. See Changelog - https://wordpress.org/plugins/delete-me/changelog/
 
 = 1.1 =
 
-This version contains a critical fix, please update immediately! See Changelog for details.
+Critical - Major stability fix and minor improvement. See Changelog - https://wordpress.org/plugins/delete-me/changelog/
 
 = 1.0 =
 

@@ -47,27 +47,17 @@ $post_types_to_delete = apply_filters( 'post_types_to_delete_with_user', $post_t
 
 $posts_list = array();
 $posts = $this->wpdb->get_results( "SELECT `ID`, `post_title`, `post_type` FROM " . $this->wpdb->posts . " WHERE `post_author`='" . $this->user_ID . "' AND `post_type` IN ('" . implode( "', '", $post_types_to_delete ) . "')", ARRAY_A );
-
-foreach ( $posts as $post ) {
-	
-	$posts_list[] = wp_specialchars_decode( $post['post_title'], ENT_QUOTES ) . "\n" . ucwords( $post['post_type'] ) . ' ' . get_permalink( $post['ID'] );
-	
-}
+foreach ( $posts as $post ) $posts_list[] = wp_specialchars_decode( $post['post_title'], ENT_QUOTES ) . "\n" . ucwords( $post['post_type'] ) . ' ' . get_permalink( $post['ID'] );
 
 // Links
 $links_list = array();
 $links = $this->wpdb->get_results( "SELECT `link_id`, `link_url`, `link_name` FROM " . $this->wpdb->links . " WHERE `link_owner`='" . $this->user_ID . "'", ARRAY_A );
-
-foreach ( $links as $link ) {
-	
-	$links_list[] = wp_specialchars_decode( $link['link_name'], ENT_QUOTES ) . "\n" . $link['link_url'];
-	
-}
+foreach ( $links as $link ) $links_list[] = wp_specialchars_decode( $link['link_name'], ENT_QUOTES ) . "\n" . $link['link_url'];
 
 // Comments
 $comments_list = array();
 
-if ( $this->option['settings']['delete_comments'] == true ) {
+if ( $this->option['settings']['delete_comments'] == true ) :
 	
 	$comments = $this->wpdb->get_results( "SELECT `comment_ID` FROM " . $this->wpdb->comments . " WHERE `user_id`='" . $this->user_ID . "'", ARRAY_A );
 	
@@ -80,7 +70,7 @@ if ( $this->option['settings']['delete_comments'] == true ) {
 		
 	}
 	
-}
+endif;
 
 // E-mail notification
 if ( $this->option['settings']['email_notification'] == true ) :
@@ -120,7 +110,11 @@ if ( is_multisite() && $this->option['settings']['ms_delete_from_network'] == tr
 	
 }
 
-// Redirect to landing URL
-( is_admin() ) ? wp_redirect( $this->option['settings']['your_profile_landing_url'] ) : wp_redirect( $this->option['settings']['shortcode_landing_url'] );
+// Logout
+wp_logout();
+
+// Redirect to same or landing URL
+$same_url = remove_query_arg( array( $this->info['trigger'], $this->info['nonce'] ), $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+is_admin() ? wp_redirect( ( $this->option['settings']['your_profile_landing_url'] == '' ) ? $same_url : $this->option['settings']['your_profile_landing_url'] ) : wp_redirect( ( $this->option['settings']['shortcode_landing_url'] == '' ) ? $same_url : $this->option['settings']['shortcode_landing_url'] );
 
 exit;

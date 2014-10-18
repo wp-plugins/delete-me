@@ -1,16 +1,16 @@
 <?php
 /*
 Plugin Name: Delete Me
-Plugin URI: http://wordpress.org/extend/plugins/delete-me/
+Plugin URI: https://wordpress.org/extend/plugins/delete-me/
 Description: Allow users with specific WordPress roles to delete themselves from the <code>Users &rarr; Your Profile</code> subpanel or anywhere Shortcodes can be used using the Shortcode <code>[plugin_delete_me /]</code>. Settings for this plugin are found on the <code>Settings &rarr; Delete Me</code> subpanel. Multisite and Network Activation supported.
-Version: 1.4
+Version: 1.5
 Author: Clinton Caldwell
-Author URI: http://wordpress.org/
+Author URI: https://profiles.wordpress.org/cmc3215/
 License: GPL2 http://www.gnu.org/licenses/gpl-2.0.html
 */
 
 /*
-Copyright (c) 2013 - Clinton Caldwell <cmc3215@gmail.com>
+Copyright (c) 2014 - Clinton Caldwell <clint3215@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License, version 2, as 
@@ -26,7 +26,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-if ( realpath( __FILE__ ) === realpath( $_SERVER['SCRIPT_FILENAME'] ) ) exit; // prevent direct access
+if ( realpath( __FILE__ ) === realpath( $_SERVER['SCRIPT_FILENAME'] ) ) exit; // Prevent direct access
 
 if ( class_exists( 'plugin_delete_me' ) == false ) :
 
@@ -60,9 +60,9 @@ class plugin_delete_me {
 		
 		$this->info = array(
 			'name' => 'Delete Me',
-			'uri' => 'http://wordpress.org/extend/plugins/delete-me/',
+			'uri' => 'https://wordpress.org/extend/plugins/delete-me/',
 			'donate_link' => 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L5VY6QDSAAZUL',
-			'version' => '1.4',
+			'version' => '1.5',
 			'wp_version_min' => '3.4',
 			'option' => 'plugin_delete_me',
 			'shortcode' => 'plugin_delete_me',
@@ -82,7 +82,6 @@ class plugin_delete_me {
 		
 		$this->option = $this->fetch_option();
 		register_activation_hook( __FILE__, array( &$this, 'activate' ) );
-		register_deactivation_hook( __FILE__, array( &$this, 'deactivate' ) );
 		add_action( 'wp_loaded', array( &$this, 'init' ) );
 		
 	}
@@ -103,17 +102,10 @@ class plugin_delete_me {
 		
 	}
 	
-	// Activate	
+	// Activate
 	public function activate( $network_wide = false ) {
 		
 		include_once( $this->info['dirname'] . '/inc/activate.php' );
-		
-	}
-	
-	// Deactivate
-	public function deactivate( $network_wide = false ) {
-		
-		include_once( $this->info['dirname'] . '/inc/deactivate.php' );
 		
 	}
 		
@@ -180,7 +172,7 @@ class plugin_delete_me {
 	// WPMU New blog
 	public function wpmu_new_blog( $blog_id ) {
 		
-		if ( ! function_exists( 'is_plugin_active_for_network' ) ) include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		if ( function_exists( 'is_plugin_active_for_network' ) == false ) include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		
 		if ( is_plugin_active_for_network( plugin_basename( __FILE__ ) ) ) {
 			
@@ -259,40 +251,39 @@ class plugin_delete_me {
 			'settings' => array(
 				'your_profile_class' => NULL,
 				'your_profile_style' => NULL,
-				'your_profile_anchor' => 'Delete Profile',
-				'your_profile_js_confirm' => 'WARNING!\n\nAll your Posts and Links will be deleted.\n\nAre you sure you want to delete user %username%?',
+				'your_profile_anchor' => 'Delete Account',
+				'your_profile_js_confirm' => 'WARNING!\n\nAre you sure you want to delete user %username%?',
 				'your_profile_landing_url' => home_url(),
 				'your_profile_enabled' => true,
 				'shortcode_class' => NULL,
 				'shortcode_style' => NULL,
-				'shortcode_anchor' => 'Delete Profile',
-				'shortcode_js_confirm' => 'WARNING!\n\nAll your Posts and Links will be deleted.\n\nAre you sure you want to delete user %username%?',
+				'shortcode_anchor' => 'Delete Account',
+				'shortcode_js_confirm' => 'WARNING!\n\nAre you sure you want to delete user %username%?',
 				'shortcode_landing_url' => home_url(),
 				'ms_delete_from_network' => true,
 				'delete_comments' => false,
 				'email_notification' => false,
-				'uninstall_on_deactivate' => false
 			),
 			'version' => $this->info['version']
 		);
 		
 	}
 	
-	// Fetch option	
+	// Fetch option
 	private function fetch_option() {
 		
 		return get_option( $this->info['option'], array() );
 		
 	}
 	
-	// Save option	
+	// Save option
 	private function save_option() {
 		
 		return update_option( $this->info['option'], $this->option );
 		
 	}
 	
-	// Admin message	
+	// Admin message
 	public function admin_message() {
 		
 		if ( is_admin() == false ) return; // stop execution		
@@ -302,7 +293,7 @@ class plugin_delete_me {
 		
 	}
 	
-	// Sync arrays	
+	// Sync arrays
 	private function sync_arrays( $sync_to, $sync_from ) {
 		
 		foreach ( $sync_from as $key => $value ) {
@@ -327,7 +318,7 @@ class plugin_delete_me {
 		
 	}
 	
-	// Striptrim deep	
+	// Striptrim deep
 	private function striptrim_deep( $value ) {
 		
 		if ( is_array( $value ) ) {

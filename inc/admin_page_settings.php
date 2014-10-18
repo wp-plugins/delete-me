@@ -9,79 +9,89 @@ if ( current_user_can( 'delete_users' ) == false ) return; // stop executing fil
 $form_nonce_action = $this->GET['page'] . '_nonce_action';
 $form_nonce_name = $this->GET['page'] . '_nonce_name';
 
-// Save changes
-if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$form_nonce_name], $form_nonce_action ) == true ) {
-	
-	// Roles	
-	settype( $this->POST['roles'], 'array' );
-	
-	foreach ( $this->wp_roles->role_objects as $role ) {
-		
-		$checked = ( isset( $this->POST['roles'][$role->name] ) ) ? true : false;
-		$has_cap = ( $role->has_cap( $this->info['cap'] ) ) ? true : false;
-		
-		if ( $checked == true && $has_cap == false ) {
-			
-			$role->add_cap( $this->info['cap'] );
-			
-		} elseif ( $checked == false && $has_cap == true ) {
-			
-			$role->remove_cap( $this->info['cap'] );
-			
-		}
-		
-	}
+// [Save Changes] or [Restore Default Settings]
+if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$form_nonce_name], $form_nonce_action ) ) {
 	
 	$default_option = $this->default_option();
 	
-	// Users -> Your Profile	
-	settype( $this->POST['your_profile_class'], 'string' );
-	settype( $this->POST['your_profile_style'], 'string' );
-	settype( $this->POST['your_profile_anchor'], 'string' );
-	settype( $this->POST['your_profile_js_confirm'], 'string' );
-	settype( $this->POST['your_profile_landing_url'], 'string' );
-	settype( $this->POST['your_profile_enabled'], 'bool' );
-	$this->option['settings']['your_profile_class'] = ( empty( $this->POST['your_profile_class'] ) ) ? NULL : $this->POST['your_profile_class'];
-	$this->option['settings']['your_profile_style'] = ( empty( $this->POST['your_profile_style'] ) ) ? NULL : $this->POST['your_profile_style'];
-	$this->option['settings']['your_profile_anchor'] = ( empty( $this->POST['your_profile_anchor'] ) ) ? $default_option['settings']['your_profile_anchor'] : $this->POST['your_profile_anchor'];
-	$this->option['settings']['your_profile_js_confirm'] = ( empty( $this->POST['your_profile_js_confirm'] ) ) ? $default_option['settings']['your_profile_js_confirm'] : $this->POST['your_profile_js_confirm'];
-	$this->option['settings']['your_profile_landing_url'] = ( empty( $this->POST['your_profile_landing_url'] ) ) ? $default_option['settings']['your_profile_landing_url'] : $this->POST['your_profile_landing_url'];
-	$this->option['settings']['your_profile_enabled'] = $this->POST['your_profile_enabled'];
+	if ( isset( $this->GET['restore'] ) ) {
+		
+		// Restore default settings
+		foreach ( $this->wp_roles->role_objects as $role ) $role->remove_cap( $this->info['cap'] );
+		$this->option = $default_option;
+		$admin_message_content = '<strong>Default settings restored.</strong>';
+		
+	} else {
+		
+		// Roles
+		settype( $this->POST['roles'], 'array' );
+		
+		foreach ( $this->wp_roles->role_objects as $role ) {
+			
+			$checked = ( isset( $this->POST['roles'][$role->name] ) ) ? true : false;
+			$has_cap = ( $role->has_cap( $this->info['cap'] ) ) ? true : false;
+			
+			if ( $checked == true && $has_cap == false ) {
+				
+				$role->add_cap( $this->info['cap'] );
+				
+			} elseif ( $checked == false && $has_cap == true ) {
+				
+				$role->remove_cap( $this->info['cap'] );
+				
+			}
+			
+		}
+		
+		// Users -> Your Profile
+		settype( $this->POST['your_profile_class'], 'string' );
+		settype( $this->POST['your_profile_style'], 'string' );
+		settype( $this->POST['your_profile_anchor'], 'string' );
+		settype( $this->POST['your_profile_js_confirm'], 'string' );
+		settype( $this->POST['your_profile_landing_url'], 'string' );
+		settype( $this->POST['your_profile_enabled'], 'bool' );
+		$this->option['settings']['your_profile_class'] = ( empty( $this->POST['your_profile_class'] ) ) ? NULL : $this->POST['your_profile_class'];
+		$this->option['settings']['your_profile_style'] = ( empty( $this->POST['your_profile_style'] ) ) ? NULL : $this->POST['your_profile_style'];
+		$this->option['settings']['your_profile_anchor'] = ( empty( $this->POST['your_profile_anchor'] ) ) ? $default_option['settings']['your_profile_anchor'] : $this->POST['your_profile_anchor'];
+		$this->option['settings']['your_profile_js_confirm'] = ( empty( $this->POST['your_profile_js_confirm'] ) ) ? $default_option['settings']['your_profile_js_confirm'] : $this->POST['your_profile_js_confirm'];
+		$this->option['settings']['your_profile_landing_url'] = ( empty( $this->POST['your_profile_landing_url'] ) ) ? '' : $this->POST['your_profile_landing_url'];
+		$this->option['settings']['your_profile_enabled'] = $this->POST['your_profile_enabled'];
+		
+		// Shortcode
+		settype( $this->POST['shortcode_class'], 'string' );
+		settype( $this->POST['shortcode_style'], 'string' );
+		settype( $this->POST['shortcode_anchor'], 'string' );
+		settype( $this->POST['shortcode_js_confirm'], 'string' );
+		settype( $this->POST['shortcode_landing_url'], 'string' );
+		$this->option['settings']['shortcode_class'] = ( empty( $this->POST['shortcode_class'] ) ) ? NULL : $this->POST['shortcode_class'];
+		$this->option['settings']['shortcode_style'] = ( empty( $this->POST['shortcode_style'] ) ) ? NULL : $this->POST['shortcode_style'];
+		$this->option['settings']['shortcode_anchor'] = ( empty( $this->POST['shortcode_anchor'] ) ) ? $default_option['settings']['shortcode_anchor'] : $this->POST['shortcode_anchor'];
+		$this->option['settings']['shortcode_js_confirm'] = ( empty( $this->POST['shortcode_js_confirm'] ) ) ? $default_option['settings']['shortcode_js_confirm'] : $this->POST['shortcode_js_confirm'];
+		$this->option['settings']['shortcode_landing_url'] = ( empty( $this->POST['shortcode_landing_url'] ) ) ? '' : $this->POST['shortcode_landing_url'];
+		
+		// Multisite: Delete from Network
+		settype( $this->POST['ms_delete_from_network'], 'bool' );
+		$this->option['settings']['ms_delete_from_network'] = $this->POST['ms_delete_from_network'];
+		
+		// Delete Comments
+		settype( $this->POST['delete_comments'], 'bool' );
+		$this->option['settings']['delete_comments'] = $this->POST['delete_comments'];
+		
+		// E-mail notification
+		settype( $this->POST['email_notification'], 'bool' );
+		$this->option['settings']['email_notification'] = $this->POST['email_notification'];
+		
+		// Admin message content
+		$admin_message_content = '<strong>Settings saved.</strong>';
+		
+	}
 	
-	// Shortcode	
-	settype( $this->POST['shortcode_class'], 'string' );
-	settype( $this->POST['shortcode_style'], 'string' );
-	settype( $this->POST['shortcode_anchor'], 'string' );
-	settype( $this->POST['shortcode_js_confirm'], 'string' );
-	settype( $this->POST['shortcode_landing_url'], 'string' );
-	$this->option['settings']['shortcode_class'] = ( empty( $this->POST['shortcode_class'] ) ) ? NULL : $this->POST['shortcode_class'];
-	$this->option['settings']['shortcode_style'] = ( empty( $this->POST['shortcode_style'] ) ) ? NULL : $this->POST['shortcode_style'];
-	$this->option['settings']['shortcode_anchor'] = ( empty( $this->POST['shortcode_anchor'] ) ) ? $default_option['settings']['shortcode_anchor'] : $this->POST['shortcode_anchor'];
-	$this->option['settings']['shortcode_js_confirm'] = ( empty( $this->POST['shortcode_js_confirm'] ) ) ? $default_option['settings']['shortcode_js_confirm'] : $this->POST['shortcode_js_confirm'];
-	$this->option['settings']['shortcode_landing_url'] = ( empty( $this->POST['shortcode_landing_url'] ) ) ? $default_option['settings']['shortcode_landing_url'] : $this->POST['shortcode_landing_url'];
-	
-	// Multisite: Delete from Network	
-	settype( $this->POST['ms_delete_from_network'], 'bool' );
-	$this->option['settings']['ms_delete_from_network'] = $this->POST['ms_delete_from_network'];
-	
-	// Delete Comments	
-	settype( $this->POST['delete_comments'], 'bool' );
-	$this->option['settings']['delete_comments'] = $this->POST['delete_comments'];
-	
-	// E-mail notification	
-	settype( $this->POST['email_notification'], 'bool' );
-	$this->option['settings']['email_notification'] = $this->POST['email_notification'];
-	
-	// Uninstall on deactivate	
-	settype( $this->POST['uninstall_on_deactivate'], 'bool' );
-	$this->option['settings']['uninstall_on_deactivate'] = $this->POST['uninstall_on_deactivate'];
-	
-	// Save Option	
+	// Save Option
 	$this->save_option();
 	
-	// Print admin message	
+	// Print admin message
 	$this->admin_message_class = 'updated';
-	$this->admin_message_content = '<strong>Settings saved.</strong>';
+	$this->admin_message_content = $admin_message_content;
 	$this->admin_message();
 	
 }
@@ -89,7 +99,7 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 <div class="wrap">
 	<div class="icon32" id="icon-options-general"><br/></div>
 	<h2><?php echo $this->info['name']; ?> Settings</h2>
-	<form action="options-general.php?page=<?php echo $this->GET['page']; ?>" method="post">
+	<form action="<?php echo esc_url( remove_query_arg( 'restore' ) ); ?>" method="post">
 		<h3>Roles</h3>
 		<table class="form-table">
 			<tr>
@@ -148,7 +158,8 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 			<tr>
 				<th scope="row"><label for="your_profile_landing_url">Landing URL</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Redirect user here after deletion.">[?]</a></th>
 				<td>
-					<input type="text" id="your_profile_landing_url" name="your_profile_landing_url" class="code large-text" value="<?php echo esc_url( $this->option['settings']['your_profile_landing_url'] ); ?>" />
+					<input type="text" id="your_profile_landing_url" name="your_profile_landing_url" class="code large-text" value="<?php if ( $this->option['settings']['your_profile_landing_url'] != '' ) echo esc_url( $this->option['settings']['your_profile_landing_url'] ); ?>" />
+					<code>Leave blank to remain at the same URL after deletion.</code>
 				</td>
 			</tr>
 			<tr>
@@ -182,7 +193,8 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 			<tr>
 				<th scope="row"><label for="shortcode_landing_url">Landing URL</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Redirect user here after deletion.">[?]</a></th>
 				<td>
-					<input type="text" id="shortcode_landing_url" name="shortcode_landing_url" class="code large-text" value="<?php echo esc_url( $this->option['settings']['shortcode_landing_url'] ); ?>" />
+					<input type="text" id="shortcode_landing_url" name="shortcode_landing_url" class="code large-text" value="<?php if ( $this->option['settings']['shortcode_landing_url'] != '' ) echo esc_url( $this->option['settings']['shortcode_landing_url'] ); ?>" />
+					<code>Leave blank to remain at the same URL after deletion.</code>
 				</td>
 			</tr>
 			<tr>
@@ -222,16 +234,10 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 					<input type="checkbox" id="email_notification" name="email_notification" value="1"<?php echo ( $this->option['settings']['email_notification'] == true ) ? ' checked="checked"' : ''; ?> />
 				</td>
 			</tr>
-			<tr>
-				<th scope="row"><label for="uninstall_on_deactivate">Uninstall on Deactivate</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Remove all settings and capabilities created by this plugin on &quot;Deactivate&quot;.">[?]</a></th>
-				<td>
-					<input type="checkbox" id="uninstall_on_deactivate" name="uninstall_on_deactivate" value="1"<?php echo ( $this->option['settings']['uninstall_on_deactivate'] == true ) ? ' checked="checked"' : ''; ?> />
-				</td>
-			</tr>
 		</table>
 		<p class="submit">
 			<?php wp_nonce_field( $form_nonce_action, $form_nonce_name ); ?>
-			<input type="submit" class="button-primary" value="Save Changes" />
+			<input type="submit" class="button-primary" value="Save Changes" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" class="button-primary" value="Restore Default Settings" onclick="if ( confirm( 'WARNING!\n\nAll changes will be lost.\n\nAre you sure you want to Restore Default Settings?' ) ) { this.form.action='<?php echo esc_url( add_query_arg( array( 'restore' => 'true' ) ) ); ?>'; } else { return false; }" />
 		</p>
 	</form>
 </div>

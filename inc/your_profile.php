@@ -13,7 +13,7 @@ $attributes = array();
 $attributes['class'] = $this->option['settings']['your_profile_class'];
 $attributes['style'] = $this->option['settings']['your_profile_style'];
 $attributes['href'] = esc_url( add_query_arg( array( $this->info['trigger'] => $profileuser->ID, $this->info['nonce'] => wp_create_nonce( $this->info['nonce'] ) ) ) );
-$attributes['onclick'] = "if ( confirm( '" . esc_html( addcslashes( str_replace( '%username%', $profileuser->user_login, $this->option['settings']['your_profile_js_confirm'] ), "'" ) ) . "' ) ) { window.location.href=this.href } return false;";
+$attributes['onclick'] = "if ( ! confirm( '" . esc_html( addcslashes( str_replace( '%username%', $profileuser->user_login, $this->option['settings']['your_profile_js_confirm'] ), "'" ) ) . "' ) ) return false;";
 
 // Remove empty attributes
 $attributes = array_filter( $attributes );
