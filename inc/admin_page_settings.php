@@ -28,8 +28,8 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 		
 		foreach ( $this->wp_roles->role_objects as $role ) {
 			
-			$checked = ( isset( $this->POST['roles'][$role->name] ) ) ? true : false;
-			$has_cap = ( $role->has_cap( $this->info['cap'] ) ) ? true : false;
+			$checked = isset( $this->POST['roles'][$role->name] ) ? true : false;
+			$has_cap = $role->has_cap( $this->info['cap'] ) ? true : false;
 			
 			if ( $checked == true && $has_cap == false ) {
 				
@@ -50,11 +50,11 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 		settype( $this->POST['your_profile_js_confirm'], 'string' );
 		settype( $this->POST['your_profile_landing_url'], 'string' );
 		settype( $this->POST['your_profile_enabled'], 'bool' );
-		$this->option['settings']['your_profile_class'] = ( empty( $this->POST['your_profile_class'] ) ) ? NULL : $this->POST['your_profile_class'];
-		$this->option['settings']['your_profile_style'] = ( empty( $this->POST['your_profile_style'] ) ) ? NULL : $this->POST['your_profile_style'];
-		$this->option['settings']['your_profile_anchor'] = ( empty( $this->POST['your_profile_anchor'] ) ) ? $default_option['settings']['your_profile_anchor'] : $this->POST['your_profile_anchor'];
-		$this->option['settings']['your_profile_js_confirm'] = ( empty( $this->POST['your_profile_js_confirm'] ) ) ? $default_option['settings']['your_profile_js_confirm'] : $this->POST['your_profile_js_confirm'];
-		$this->option['settings']['your_profile_landing_url'] = ( empty( $this->POST['your_profile_landing_url'] ) ) ? '' : $this->POST['your_profile_landing_url'];
+		$this->option['settings']['your_profile_class'] = empty( $this->POST['your_profile_class'] ) ? NULL : $this->POST['your_profile_class'];
+		$this->option['settings']['your_profile_style'] = empty( $this->POST['your_profile_style'] ) ? NULL : $this->POST['your_profile_style'];
+		$this->option['settings']['your_profile_anchor'] = empty( $this->POST['your_profile_anchor'] ) ? $default_option['settings']['your_profile_anchor'] : $this->POST['your_profile_anchor'];
+		$this->option['settings']['your_profile_js_confirm'] = empty( $this->POST['your_profile_js_confirm'] ) ? $default_option['settings']['your_profile_js_confirm'] : $this->POST['your_profile_js_confirm'];
+		$this->option['settings']['your_profile_landing_url'] = empty( $this->POST['your_profile_landing_url'] ) ? '' : $this->POST['your_profile_landing_url'];
 		$this->option['settings']['your_profile_enabled'] = $this->POST['your_profile_enabled'];
 		
 		// Shortcode
@@ -63,11 +63,11 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 		settype( $this->POST['shortcode_anchor'], 'string' );
 		settype( $this->POST['shortcode_js_confirm'], 'string' );
 		settype( $this->POST['shortcode_landing_url'], 'string' );
-		$this->option['settings']['shortcode_class'] = ( empty( $this->POST['shortcode_class'] ) ) ? NULL : $this->POST['shortcode_class'];
-		$this->option['settings']['shortcode_style'] = ( empty( $this->POST['shortcode_style'] ) ) ? NULL : $this->POST['shortcode_style'];
-		$this->option['settings']['shortcode_anchor'] = ( empty( $this->POST['shortcode_anchor'] ) ) ? $default_option['settings']['shortcode_anchor'] : $this->POST['shortcode_anchor'];
-		$this->option['settings']['shortcode_js_confirm'] = ( empty( $this->POST['shortcode_js_confirm'] ) ) ? $default_option['settings']['shortcode_js_confirm'] : $this->POST['shortcode_js_confirm'];
-		$this->option['settings']['shortcode_landing_url'] = ( empty( $this->POST['shortcode_landing_url'] ) ) ? '' : $this->POST['shortcode_landing_url'];
+		$this->option['settings']['shortcode_class'] = empty( $this->POST['shortcode_class'] ) ? NULL : $this->POST['shortcode_class'];
+		$this->option['settings']['shortcode_style'] = empty( $this->POST['shortcode_style'] ) ? NULL : $this->POST['shortcode_style'];
+		$this->option['settings']['shortcode_anchor'] = empty( $this->POST['shortcode_anchor'] ) ? $default_option['settings']['shortcode_anchor'] : $this->POST['shortcode_anchor'];
+		$this->option['settings']['shortcode_js_confirm'] = empty( $this->POST['shortcode_js_confirm'] ) ? $default_option['settings']['shortcode_js_confirm'] : $this->POST['shortcode_js_confirm'];
+		$this->option['settings']['shortcode_landing_url'] = empty( $this->POST['shortcode_landing_url'] ) ? '' : $this->POST['shortcode_landing_url'];
 		
 		// Multisite: Delete from Network
 		settype( $this->POST['ms_delete_from_network'], 'bool' );
@@ -114,8 +114,8 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 					?>
 					
 					<label>
-						<input type="checkbox" name="roles[<?php echo $role->name; ?>]" value="1"<?php echo ( $role->has_cap( $this->info['cap'] ) == true ) ? ' checked="checked"' : ''; echo $disabled; ?> />
-						<?php if ( $role->name == 'administrator' ) { echo esc_html( 'Super Admin & ' ); } echo esc_html( $this->wp_roles->roles[$role->name]['name'] ); ?>
+						<input type="checkbox" name="roles[<?php echo $role->name; ?>]" value="1"<?php echo $role->has_cap( $this->info['cap'] ) ? ' checked="checked"' : ''; echo $disabled; ?> />
+						<?php if ( $role->name == 'administrator' ) echo esc_html( 'Super Admin & ' ); echo esc_html( $this->wp_roles->roles[$role->name]['name'] ); ?>
 					</label>
 					<br />
 					
@@ -211,7 +211,7 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 				</td>
 			</tr>
 		</table>
-		<h3>Multisite <span class="description">( <?php echo ( is_multisite() ) ? 'On' : 'Off - The setting below applies only to WordPress Multisite installations.'; ?> )</span></h3>
+		<h3>Multisite <span class="description">( <?php echo is_multisite() ? 'On' : 'Off - The setting below applies only to WordPress Multisite installations.'; ?> )</span></h3>
 		<table class="form-table">
 			<tr>
 				<th scope="row"><label for="ms_delete_from_network">Delete From Network</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="When a user deletes themselves from this Site, IF THEY DON'T BELONG TO ANY OTHER NETWORK SITES their user will be deleted permanently from the Network.">[?]</a></th>
