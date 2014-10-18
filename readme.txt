@@ -78,7 +78,7 @@ Nothing when using the self-closing Shortcode tag (i.e. `[plugin_delete_me /]`).
 
 = Where is a user sent after deleting themselves? =
 
-The `Settings -> Delete Me` subpanel lets you enter any URL you'd like to redirect deleted users to, set to homepage by default.
+The `Settings -> Delete Me` subpanel lets you enter any URL you'd like to redirect deleted users to, set to homepage by default. You can leave "Landing URL" blank to remain at the same URL after deletion.
 
 = Is there a confirmation before the user deletes themselves? =
 
