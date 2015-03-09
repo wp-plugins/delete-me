@@ -11,7 +11,7 @@ Allow users with specific WordPress roles to delete themselves from the Your Pro
 
 == Description ==
 
-Allow users with specific WordPress roles to delete themselves from the Your Profile page or anywhere Shortcodes can be used using the Shortcode `[plugin_delete_me /]`.
+Allow users with specific WordPress roles to delete themselves from the **Your Profile** page or anywhere Shortcodes can be used using the Shortcode `[plugin_delete_me /]`.
 Settings for this plugin are found on the **Settings -> Delete Me** subpanel. Multisite and Network Activation supported.
 
 **How it works:**
