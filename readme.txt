@@ -7,7 +7,7 @@ Tested up to: 4.1
 Stable tag: 1.6
 License: GPL2 http://www.gnu.org/licenses/gpl-2.0.html
 
-Allow users with specific WordPress roles to delete themselves from the **Your Profile** page or anywhere Shortcodes can be used.
+Allow users with specific WordPress roles to delete themselves from the Your Profile page or anywhere Shortcodes can be used.
 
 == Description ==
 
