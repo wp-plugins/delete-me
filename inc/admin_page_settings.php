@@ -43,7 +43,7 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 			
 		}
 		
-		// Users -> Your Profile
+		// Your Profile
 		settype( $this->POST['your_profile_class'], 'string' );
 		settype( $this->POST['your_profile_style'], 'string' );
 		settype( $this->POST['your_profile_anchor'], 'string' );
@@ -140,7 +140,7 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 				</td>
 			</tr>
 		</table>
-		<h3>Users &rarr; Your Profile</h3>
+		<h3>Your Profile</h3>
 		<table class="form-table">
 			<tr>
 				<th scope="row"><label for="your_profile_anchor">Link</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Class &amp; Style are optional. The last box is the clickable content of the link in HTML (e.g. Delete Account &mdash; or &mdash; &lt;img alt=&quot;&quot; src=&quot;http://www.example.com/image.png&quot; width=&quot;100&quot; height=&quot;20&quot; /&gt;)">[?]</a></th>
@@ -190,7 +190,7 @@ if ( isset( $this->POST[$form_nonce_name] ) && wp_verify_nonce( $this->POST[$for
 				</td>
 			</tr>
 			<tr>
-				<th scope="row"><label for="your_profile_enabled">Link Enabled</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Check box to show delete link near the bottom of the Profile page, uncheck box to hide delete link.">[?]</a></th>
+				<th scope="row"><label for="your_profile_enabled">Link Enabled</label> <a href="#" onclick="return false;" style="text-decoration: none;" title="Check box to show delete link near the bottom of the Your Profile page, uncheck box to hide delete link.">[?]</a></th>
 				<td>
 					<input type="checkbox" id="your_profile_enabled" name="your_profile_enabled" value="1"<?php echo ( $this->option['settings']['your_profile_enabled'] == true ) ? ' checked="checked"' : ''; ?> />
 				</td>
