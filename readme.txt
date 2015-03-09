@@ -95,8 +95,9 @@ Yes. The **Settings -> Delete Me** subpanel has a setting called "E-mail Notific
 == Screenshots ==
 
 1. **Your Profile** page.
-2. Post or Page using the Shortcode.
-3. **Settings -> Delete Me** subpanel.
+2. **Your Profile** confirmation page.
+3. Post or Page using the Shortcode. You can disable the Javascript confirm and use the Shortcode on a custom confirmation page.
+4. **Settings -> Delete Me** subpanel.
 
 == Changelog ==
 
