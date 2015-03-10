@@ -22,7 +22,7 @@ Settings for this plugin are found on the **Settings -> Delete Me** subpanel. Mu
 
 * If confirmed, user and all their Posts, Links, and (optionally) Comments are deleted.
 
-* Deleted user (optionally) redirected to landing page URL, default is homepage, can be changed or left blank.
+* Deleted user redirected (optionally) to landing page URL, default is homepage, can be changed or left blank.
 
 **Settings available:**
 
@@ -158,27 +158,3 @@ Yes. The **Settings -> Delete Me** subpanel has a setting called "E-mail Notific
 = 1.6 =
 
 Recommended - Improvements added. See Changelog - https://wordpress.org/plugins/delete-me/changelog/
-
-= 1.5 =
-
-Recommended - Minor stability fixes and improvements. See Changelog - https://wordpress.org/plugins/delete-me/changelog/
-
-= 1.4 =
-
-Critical - Major stability fixes and minor improvements. See Changelog - https://wordpress.org/plugins/delete-me/changelog/
-
-= 1.3 =
-
-Recommended - Added a setting to customize the text of the Javascript confirm dialog box.
-
-= 1.2 =
-
-Recommended - Major improvements added. See Changelog - https://wordpress.org/plugins/delete-me/changelog/
-
-= 1.1 =
-
-Critical - Major stability fix and minor improvement. See Changelog - https://wordpress.org/plugins/delete-me/changelog/
-
-= 1.0 =
-
-Initial release.
