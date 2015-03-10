@@ -22,7 +22,7 @@ Settings for this plugin are found on the **Settings -> Delete Me** subpanel. Mu
 
 * If confirmed, user and all their Posts, Links, and (optionally) Comments are deleted.
 
-* Deleted user redirected (optionally) to landing page URL, default is homepage, can be changed or left blank.
+* Deleted user (optionally) redirected to landing page URL, default is homepage, can be changed or left blank.
 
 **Settings available:**
 
