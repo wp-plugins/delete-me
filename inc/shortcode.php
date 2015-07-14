@@ -19,4 +19,4 @@ $attributes = array_filter( $attributes );
 foreach ( $attributes as $key => $value ) $paired_attributes[] = $key . '="' . $value . '"';
 
 // Implode attributes, return longcode as delete link
-$longcode = '<a ' . implode( ' ', $paired_attributes ) . '>' . $this->option['settings']['shortcode_anchor'] . '</a>';
+$longcode = '<a ' . implode( ' ', $paired_attributes ) . '>' . str_replace( '%shortcode%', $content, $this->option['settings']['shortcode_anchor'] ) . '</a>';
