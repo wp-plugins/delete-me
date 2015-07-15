@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: delete, user delete, delete profile, delete account, delete own account, unregister, user unregister, unsubscribe, user unsubscribe, user management, multisite
 Requires at least: 3.4
 Tested up to: 4.2
-Stable tag: 1.7
+Stable tag: 1.8
 License: GPL2 http://www.gnu.org/licenses/gpl-2.0.html
 
 Allow users with specific WordPress roles to delete themselves from the Your Profile page or anywhere Shortcodes can be used.
@@ -101,6 +101,12 @@ Yes. The **Settings -> Delete Me** subpanel has a setting called "E-mail Notific
 
 == Changelog ==
 
+= 1.8 =
+
+* Release date: 07/15/2015
+* The following new Shortcode attributes may be used to override settings, but are not required: class, style, html, js_confirm_warning, landing_url.
+* **v1.7 change reverted** - %shortcode% term no longer used, attributes were added instead for a more complete and consistent way of customizing the shortcode.
+
 = 1.7 =
 
 * Release date: 07/14/2015
@@ -160,6 +166,6 @@ Yes. The **Settings -> Delete Me** subpanel has a setting called "E-mail Notific
 
 == Upgrade Notice ==
 
-= 1.7 =
+= 1.8 =
 
 Recommended - Improvements added. See Changelog - https://wordpress.org/plugins/delete-me/changelog/
