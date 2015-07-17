@@ -6,15 +6,22 @@ if ( isset( $this ) == false || get_class( $this ) != 'plugin_delete_me' ) exit;
 if ( current_user_can( $this->info['cap'] ) == false || ( is_multisite() && is_super_admin() ) ) return; // stop execution of this file
 
 // User has capability, prepare delete link
+$atts = shortcode_atts( array(
+	'class' => $this->option['settings']['shortcode_class'],							// Settings default
+	'style' => $this->option['settings']['shortcode_style'],							// Settings default
+	'html' => $this->option['settings']['shortcode_anchor'],							// Settings default
+	'js_confirm_warning' => $this->option['settings']['shortcode_js_confirm_warning'],	// Settings default
+	'landing_url' => '',																// Empty default
+) , $atts );
 $attributes = array();
 $attributes['class'] = $atts['class'];
 $attributes['style'] = $atts['style'];
 $attributes['href'] = esc_url( add_query_arg(
-	array_filter(
+	array_filter( // Removes landing_url if empty
 		array(
 			$this->info['trigger'] => $this->user_ID,
 			$this->info['nonce'] => wp_create_nonce( $this->info['nonce'] ),
-			$this->info['trigger'] . '_landing_url' => $atts['landing_url'], // Removed by array_filter() if not specified
+			$this->info['trigger'] . '_landing_url' => $atts['landing_url'],
 		)
 	)
 ) );

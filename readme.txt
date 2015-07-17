@@ -1,7 +1,7 @@
 === Delete Me ===
 Contributors: cmc3215
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L5VY6QDSAAZUL
-Tags: delete, user delete, delete profile, delete account, delete own account, unregister, user unregister, unsubscribe, user unsubscribe, user management, multisite
+Tags: delete, delete profile, delete account, delete own account, unregister, unsubscribe, user management, multisite
 Requires at least: 3.4
 Tested up to: 4.2
 Stable tag: 1.8
