@@ -271,13 +271,6 @@ class plugin_delete_me {
 	// Shortcode
 	public function shortcode( $atts = array(), $content = '', $code = '' ) {
 		
-		$atts = shortcode_atts( array(
-			'class' => $this->option['settings']['shortcode_class'],							// Settings default
-			'style' => $this->option['settings']['shortcode_style'],							// Settings default
-			'html' => $this->option['settings']['shortcode_anchor'],							// Settings default
-			'js_confirm_warning' => $this->option['settings']['shortcode_js_confirm_warning'],	// Settings default
-			'landing_url' => '',																// No default, used only if specified
-		) , $atts, $this->info['shortcode'] );
 		include_once( $this->info['dirname'] . '/inc/shortcode.php' );
 		return ( isset( $longcode ) ) ? $longcode : $content;
 		
